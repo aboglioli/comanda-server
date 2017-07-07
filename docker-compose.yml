@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  node:
+    build:
+      context: .
+    volumes:
+      - "./:/src"
+    ports:
+      - "3000:3000"
+    links:
+      - mongodb
+
+  test:
+    build:
+      context: .
+    volumes:
+      - "./:/src"
+    environment:
+      - DB_NAME=mercury-test
+    command: npm test
+    links:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
