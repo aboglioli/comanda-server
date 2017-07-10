@@ -18,7 +18,7 @@ services:
       - "./:/src"
     environment:
       - DB_NAME=mercury-test
-    command: npm test
+    command: npm install; npm test
     links:
       - mongodb
 
