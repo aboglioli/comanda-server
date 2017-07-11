@@ -16,11 +16,11 @@ module.exports = {
   database: {
     host: env.DB_HOST || 'mongodb',
     port: env.DB_PORT || 27017,
-    name: env.DB_NAME || 'mercury'
+    name: env.DB_NAME || 'comanda'
   },
   swagger: {
     info: {
-      title: 'Mercury API Documentation',
+      title: 'Comanda API Documentation',
       version: package.version
     },
     basePath: '/api/v1',

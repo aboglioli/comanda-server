@@ -7,7 +7,7 @@ describe('Users', () => {
   let adminToken;
   let user;
 
-  before(async () => {
+  beforeEach(async () => {
     await User.removeAll();
 
     await User.create({

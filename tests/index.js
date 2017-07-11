@@ -1,7 +1,7 @@
 const config = require('../src/config');
 
 config.app.logging = false;
-config.database.name = 'mercury-test';
+config.database.name = 'comanda-test';
 
 const db = require('../src/core/db');
 db.connection.dropDatabase();
