@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "nodemon --exec \"mocha -R min\" tests"
+    "test": "mocha --recursive tests",
+    "test-watch": "nodemon --exec \"mocha -R min\" tests"
   },
   "repository": {
     "type": "git",

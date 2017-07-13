@@ -8,7 +8,6 @@ services:
       - "./:/src"
     ports:
       - "3000:3000"
-    command: npm start
     links:
       - mongodb
 
@@ -19,7 +18,7 @@ services:
       - "./:/src"
     environment:
       - DB_NAME=mercury-test
-    command: npm test
+    command: npm run test-watch
     links:
       - mongodb
 
