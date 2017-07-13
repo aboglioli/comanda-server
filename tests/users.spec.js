@@ -1,7 +1,9 @@
 const {expect} = require('chai');
+const _ = require('lodash');
 
 const [server, utils] = require('./index');
 const User = require('../src/models/user');
+const DATA = require('./mock');
 
 describe('Users', () => {
   let adminToken;
@@ -10,20 +12,11 @@ describe('Users', () => {
   beforeEach(async () => {
     await User.removeAll();
 
-    await User.create({
-      name: 'Admin',
-      email: 'admin@admin.com',
-      password: '123456',
-      scope: ['admin']
-    });
+    DATA.admin.password = 'admin123';
+    await User.create(DATA.admin);
+    user = await User.create(DATA.user);
 
-    user = await User.create({
-      name: 'User',
-      email: 'user@user.com',
-      password: 'user123'
-    });
-
-    adminToken = await utils.login('admin@admin.com', '123456');
+    adminToken = await utils.login('admin@admin.com', 'admin123');
   });
 
 	it('GET /users', async () => {

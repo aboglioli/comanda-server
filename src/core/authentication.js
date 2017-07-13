@@ -17,12 +17,19 @@ async function authenticate(decoded, request, callback) {
 }
 
 function generateHash(password) {
-  const salt = bcrypt.genSaltSync(10);
-  return bcrypt.hashSync(password, salt);
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, 10, (err, hash) => {
+      resolve(hash);
+    });
+  });
 }
 
-function comparePasswords(password1, password2) {
-  return bcrypt.compareSync(password1, password2);
+function comparePasswords(password, hash) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, hash, (err, result) => {
+      resolve(result);
+    });
+  });
 }
 
 module.exports = {

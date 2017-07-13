@@ -1,7 +1,7 @@
 const url = require('url');
 
 const config = require('./config');
-const {buildRoutes} = require('./utils/routes');
+const {buildRoutes} = require('./core/routes');
 
 const account = require('./resources/account');
 const users = require('./resources/users');

@@ -2,7 +2,6 @@ const {expect} = require('chai');
 
 const {omitDeep} = require('./utils');
 const routes = require('../src/routes');
-const DATA = require('./mock');
 
 const {buildRoutes} = require('../src/core/routes');
 const {normalize} = require('../src/core/units');
@@ -67,11 +66,74 @@ describe('Core', () => {
 
   describe('Price', () => {
     it('should calculate price of product with subproducts (nested products)', () => {
-      const raw1Price = calculate(DATA.raw1),
-            raw2Price = calculate(DATA.raw2),
-            single1Price = calculate(DATA.single1),
-            single2Price = calculate(DATA.single2),
-            combinedPrice = calculate(DATA.combined);
+      const raw1 = {
+        type: 'raw',
+        price: {
+          value: 20,
+          quantity: {
+            value: 1,
+            unit: 'kg'
+          }
+        }
+      },
+      raw2 = {
+        type: 'raw',
+        price: {
+          value: 10,
+          quantity: {
+            value: 1,
+            unit: 'l'
+          }
+        }
+      },
+      single1 = {
+        type: 'single',
+        subproducts: [{
+          quantity: {
+            value: 500,
+            unit: 'g'
+          },
+          product: raw1
+        }, {
+          quantity: {
+            value: 0.5,
+            unit: 'dal'
+          },
+          product: raw2
+        }]
+      },
+      single2 = {
+        type: 'single',
+        subproducts: [{
+          quantity: {
+            value: 2,
+            unit: 'kg'
+          },
+          product: raw1
+        } ]
+      },
+      combined = {
+        type: 'combination',
+        subproducts: [{
+          quantity: {
+            value: 3,
+            unit: 'u'
+          },
+          product: single1
+        }, {
+          quantity: {
+            value: 2,
+            unit: 'u'
+          },
+          product: single2
+        }]
+      };
+
+      const raw1Price = calculate(raw1),
+            raw2Price = calculate(raw2),
+            single1Price = calculate(single1),
+            single2Price = calculate(single2),
+            combinedPrice = calculate(combined);
 
       expect(raw1Price).to.equal(20);
       expect(raw2Price).to.equal(10);

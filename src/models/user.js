@@ -8,7 +8,7 @@ async function create(data) {
     throw new Error('Existing user');
   }
 
-  data.password = generateHash(data.password);
+  data.password = await generateHash(data.password);
 
   const user = new UserSchema(data);
   await user.save();
@@ -18,7 +18,7 @@ async function create(data) {
 
 async function updateById(userId, data) {
   if(data.password) {
-    data.password = generateHash(data.password);
+    data.password = await generateHash(data.password);
   }
 
   await UserSchema

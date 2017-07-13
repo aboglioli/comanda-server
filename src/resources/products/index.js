@@ -1,7 +1,6 @@
 const Joi = require('joi');
 
-const ProductHandler = require('./product.handler');
-const RawProductHandler = require('./raw-product.handler');
+const ProductHandler = require('./handlers');
 
 module.exports = [
   {
@@ -15,7 +14,8 @@ module.exports = [
       tags: ['api', 'products'],
       validate: {
         query: {
-          name: Joi.string().required()
+          name: Joi.string().optional(),
+          type: Joi.string().valid('raw', 'single', 'combination').optional()
         }
       }
     }
@@ -52,45 +52,22 @@ module.exports = [
       validate: {
         payload: {
           name: Joi.string().required(),
-          subproducts: Joi.array().items(Joi.object({
-            quantity: Joi.number(),
-            product: Joi.string()
-          })).optional(),
-          rawProducts: Joi.array().items(Joi.object({
-            quantity: Joi.number(),
-            unit: Joi.string(),
-            product: Joi.string()
-          })).optional()
-        },
-        headers: Joi.object({
-          authorization: Joi.string().required()
-        }).unknown()
-      }
-    }
-  },
-  {
-    path: '/raw',
-    method: 'POST',
-    config: {
-      handler: {
-        async: RawProductHandler.post
-      },
-      auth: {
-        strategy: 'jwt',
-        scope: 'admin'
-      },
-      description: 'Create product',
-      tags: ['api', 'products'],
-      validate: {
-        payload: {
-          name: Joi.string().required(),
+          description: Joi.string().optional(),
+          type: Joi.string().valid('raw', 'single', 'combination').required(),
           price: Joi.object({
             value: Joi.number().required(),
-            unit: Joi.object({
+            quantity: Joi.object({
               value: Joi.number().required(),
-              name: Joi.string().required()
+              unit: Joi.string().required()
             }).required()
-          }).required()
+          }).optional(),
+          subproducts: Joi.array().items(Joi.object({
+            quantity: Joi.object({
+              value: Joi.number().required(),
+              unit: Joi.string().required()
+            }).required(),
+            product: Joi.string().required()
+          })).optional()
         },
         headers: Joi.object({
           authorization: Joi.string().required()

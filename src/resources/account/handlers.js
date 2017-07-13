@@ -14,7 +14,9 @@ async function login(request, reply) {
 
   const user = await User.getByEmail(email);
 
-  if(!user || !comparePasswords(password, user.password)) {
+  const equalPasswords = await comparePasswords(password, user.password);
+
+  if(!user || !equalPasswords) {
     return reply({message: 'Invalid credentials'}).code(400);
   }
 

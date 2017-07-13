@@ -18,27 +18,34 @@ const volumeUnits = [
   {unit: 'kl', multiplier: 1000.0}
 ];
 
+const AVAILABLE_UNITS = [
+  'u',
+  ...massUnits.map(unit => unit.unit),
+  ...volumeUnits.map(unit => unit.unit)
+];
+
 // {value, unit}
-function normalize(value) {
-  let unit = massUnits.find(u => u.unit === value.unit);
-  const res = {};
+function normalize(value, unitName) {
+  let unit = massUnits.find(u => u.unit === unitName);
+  const res = [];
 
   if(!unit) {
-    unit = volumeUnits.find(u => u.unit === value.unit);
-    res.unit = 'l';
+    unit = volumeUnits.find(u => u.unit === unitName);
+    res[1] = 'l';
   } else {
-    res.unit = 'g';
+    res[1] = 'g';
   }
 
   if(!unit) {
     throw new Error('Unit does not exist');
   }
 
-  res.value = value.value * unit.multiplier;
+  res[0] = value * unit.multiplier;
 
   return res;
 }
 
 module.exports = {
-  normalize
+  normalize,
+  AVAILABLE_UNITS
 };
