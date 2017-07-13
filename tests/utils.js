@@ -1,6 +1,17 @@
 const _ = require('lodash');
 
 const request = require('./request')();
+const User = require('../src/models/user');
+const DATA = require('./mock');
+
+async function createAdminAndLogin() {
+  User.removeAll();
+
+  DATA.admin.password = 'admin123';
+  await User.create(DATA.admin);
+
+  return await login('admin@admin.com', 'admin123');
+}
 
 async function login(email, password) {
   const body = await request({
@@ -26,5 +37,6 @@ function omitDeep(collection, excludeKeys) {
 
 module.exports = {
   omitDeep,
-  login
+  login,
+  createAdminAndLogin
 };

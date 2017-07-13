@@ -6,7 +6,10 @@ const Product = require('../src/models/product');
 
 describe('Product', () => {
   let adminToken;
-  let user;
+
+  before(async () => {
+    adminToken = utils.createAdminAndLogin();
+  });
 
   beforeEach(async () => {
     // await User.removeAll();
