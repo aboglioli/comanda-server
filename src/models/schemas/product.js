@@ -24,7 +24,7 @@ const ProductSchema = new mongoose.Schema({
   }},
   subproducts: [{
     quantity: {type: QuantitySchema, required: true},
-    product: {type: mongoose.Schema.Types.ObjectId, ref: 'RawProduct'}
+    product: {type: mongoose.Schema.Types.ObjectId, ref: 'Product'}
   }]
 });
 

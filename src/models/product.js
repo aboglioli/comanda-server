@@ -4,7 +4,7 @@ async function create(data) {
   const product = new ProductSchema(data);
   await product.save();
 
-  return await getById(product._id);
+  return await findById(product._id);
 }
 
 async function findById(productId) {
@@ -22,6 +22,14 @@ async function findByName(name) {
     .find({
       name: {$regex: new RegExp(name, 'i')}
     });
+}
+
+async function removeById(productId) {
+  return await ProductSchema.findById(productId).remove();
+}
+
+async function removeAll() {
+  return await ProductSchema.find({}).remove();
 }
 
 module.exports = {

@@ -3,33 +3,27 @@ const {expect} = require('chai');
 const [server, utils] = require('./index');
 const User = require('../src/models/user');
 const Product = require('../src/models/product');
+const DATA = require('./mock');
 
 describe('Product', () => {
   let adminToken;
 
   before(async () => {
-    adminToken = utils.createAdminAndLogin();
-  });
-
-  beforeEach(async () => {
-    // await User.removeAll();
-
-    // await User.create({
-    //   name: 'Admin',
-    //   email: 'admin@admin.com',
-    //   password: '123456',
-    //   scope: ['admin']
-    // });
-
-    // adminToken = await utils.login('admin@admin.com', '123456');
+    // await utils.mockData();
+    // adminToken = await utils.login();
   });
 
   describe('Model', () => {
-    // const rawProduct =
+    it('should create', async () => {
+
+      // const products = await Product.find();
+      // expect(products.length).to.equal(5);
+      // expect(single1.subproducts[0].product.toObject()).to.deep.equal(raw1.toObject());
+      // expect(combined.subproducts[0].product.toObject()).to.deep.equal(single1.toObject());
+    });
   });
 
   describe('Resource', () => {
-
   });
 
   // it('POST /products/raw', async () => {

@@ -27,6 +27,10 @@ async function getById(request, reply) {
 }
 
 async function post(request, reply) {
+  if(request.payload.type !== 'raw' && request.payload.price) {
+    return reply({message: 'Only raw products can have price'}).code(400);
+  }
+
   let product = await Product.create(request.payload);
   return reply(ProductUtils.format(product.toObject())).code(201);
 }

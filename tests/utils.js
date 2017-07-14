@@ -1,29 +1,34 @@
 const _ = require('lodash');
 
-const request = require('./request')();
+const request = require('request');
 const User = require('../src/models/user');
-const DATA = require('./mock');
 
-async function createAdminAndLogin() {
-  User.removeAll();
+let adminToken;
 
-  DATA.admin.password = 'admin123';
-  await User.create(DATA.admin);
+exports.login = async () => {
+  if(!adminToken) {
+    const options = {
+      method: 'post',
+      url: 'http://localhost:3000/api/v1/account/login',
+      headers: {
+        'content-type': 'application/json'
+      },
+      json: true,
+      form: {email: 'admin@admin.com', password: 'admin123'}
+    };
 
-  return await login('admin@admin.com', 'admin123');
-}
+    return new Promise((resolve, reject) => {
+      request(options, (err, response, body) => {
+        adminToken = body.authToken;
+        resolve(adminToken);
+      });
+    });
+  }
 
-async function login(email, password) {
-  const body = await request({
-    method: 'post',
-    url: 'account/login',
-    form: {email, password}
-  });
+  return adminToken;
+};
 
-  return body.authToken;
-}
-
-function omitDeep(collection, excludeKeys) {
+exports.omitDeep = (collection, excludeKeys) => {
   function omitFn(value) {
     if (value && typeof value === 'object') {
       excludeKeys.forEach((key) => {
@@ -33,10 +38,4 @@ function omitDeep(collection, excludeKeys) {
   }
 
   return _.cloneDeepWith(collection, omitFn);
-}
-
-module.exports = {
-  omitDeep,
-  login,
-  createAdminAndLogin
 };
