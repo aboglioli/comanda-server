@@ -7,6 +7,7 @@ const routes = require('../src/routes');
 const {buildRoutes} = require('../src/core/routes');
 const {normalize} = require('../src/core/units');
 const {calculate} = require('../src/core/price');
+const {format} = require('../src/core/product');
 
 
 describe('Core', () => {
@@ -66,7 +67,7 @@ describe('Core', () => {
   });
 
   describe('Price', () => {
-    it('should calculate price of product with subproducts (nested products)', async () => {
+    it('should calculate() price of product with subproducts (nested products)', async () => {
       const data = await utils.mockData();
 
       const raw1Price = calculate(data.raw1),
@@ -80,6 +81,21 @@ describe('Core', () => {
       expect(single1Price).to.equal(0.5 * raw1Price + 5 * raw2Price);
       expect(single2Price).to.equal(2 * raw1Price);
       expect(combinedPrice).to.equal(3 * single1Price + 2 * single2Price);
+    });
+  });
+
+  describe('Product', () => {
+    it('should format products', async () => {
+      const data = await utils.mockData();
+
+      const formatted = format([data.raw1, data.raw2, data.single1, data.single2, data.combined]);
+
+      expect(formatted.length).to.equal(5);
+      expect(formatted[0].price).to.deep.equal(data.raw1.price);
+      expect(formatted[1].price).to.deep.equal(data.raw2.price);
+
+      const combinedPrice = 3 * (0.5 * 20 + 5 * 10) + 2 * (2 * 20);
+      expect(formatted[4].price.value).to.equal(combinedPrice);
     });
   });
 });

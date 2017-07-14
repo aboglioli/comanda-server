@@ -14,27 +14,120 @@ describe('Product', () => {
     adminToken = await utils.login();
   });
 
-  // it('POST /products/raw', async () => {
-  //   const raw = {
-  //     name: 'Raw1',
-  //     price: {
-  //       value: 15,
-  //       unit: {
-  //         value: 1,
-  //         name: 'kg'
-  //       }
-  //     }
-  //   };
+  it('GET /products', async () => {
+    const res = await utils.request.get('products')
+          .expect(200);
 
-  //   const res = await utils.request.post('products/raw')
-  //         .set('Authorization', adminToken)
-  //         .send(raw)
-  //         .expect(201);
+    expect(res.body.length).to.equal(5);
+    expect(res.body[0].name).to.equal(data.raw1.name);
+    expect(res.body[1].name).to.equal(data.raw2.name);
+    expect(res.body[4].name).to.equal(data.combined.name);
 
-  //   expect(res.body._id).to.not.be.undefined;
-  //   expect(res.body.name).to.deep.equal(raw.name);
-  //   expect(res.body.price).to.deep.equal(raw.price);
-  // });
+    const combinedPrice = 3 * (0.5 * 20 + 5 * 10) + 2 * (2 * 20);
+    expect(res.body[4].price.value).to.equal(combinedPrice);
+  });
+
+  it('GET /products/{productId}', async () => {
+    const res = await utils.request.get('products/' + data.combined._id)
+      .expect(200);
+
+    expect(res.body.name).to.equal('Combination');
+  });
+
+  it('GET /products?name=%', async () => {
+    const res = await utils.request.get('products?name=raw')
+      .expect(200);
+
+    expect(res.body.length).to.equal(2);
+    expect(res.body[0].name).to.equal('Raw1');
+    expect(res.body[1].name).to.equal('Raw2');
+  });
+
+  it('GET /products?type=%', async () => {
+    const res = await utils.request.get('products?type=single')
+      .expect(200);
+
+    expect(res.body.length).to.equal(2);
+    expect(res.body[0].name).to.equal('Single1');
+    expect(res.body[1].name).to.equal('Single2');
+  });
+
+  it('POST /products', async () => {
+    const newProduct = {
+      name: 'Single3',
+      type: 'single',
+      subproducts: [{
+        quantity: {
+          value: 2,
+          unit: 'kg'
+        },
+        product: data.raw1._id
+      }, {
+        quantity: {
+          value: 800,
+          unit: 'ml'
+        },
+        product: data.raw2._id
+      }]
+    };
+
+    const res = await utils.request.post('products')
+      .set('Authorization', adminToken)
+      .send(newProduct)
+      .expect(201);
+
+    expect(res.body._id).to.not.be.undefined;
+    expect(res.body.name).to.equal(newProduct.name);
+    expect(res.body.type).to.equal(newProduct.type);
+    expect(res.body.price.value).to.equal(2 * 20 + 0.8 * 10);
+    expect(res.body.subproducts[0].product._id.toString()).to.equal(data.raw1._id.toString());
+  });
+
+  it('PUT /products', async () => {
+    const newProduct = {
+      name: 'NewProduct',
+      type: 'single',
+      subproducts: [{
+        quantity: {
+          value: 2,
+          unit: 'kg'
+        },
+        product: data.raw1._id
+      }, {
+        quantity: {
+          value: 800,
+          unit: 'ml'
+        },
+        product: data.raw2._id
+      }]
+    };
+
+    let res = await utils.request.post('products')
+      .set('Authorization', adminToken)
+      .send(newProduct)
+      .expect(201);
+
+    const productId = res.body._id;
+
+    res = await utils.request.put('products/' + productId)
+      .set('Authorization', adminToken)
+      .send({
+        name: 'NewName',
+        description: 'Description',
+        subproducts: [{
+          quantity: {
+            value: 30,
+            unit: 'hg'
+          },
+          product: data.raw1._id
+        }]
+      })
+      .expect(200);
+
+    expect(res.body.name).to.equal('NewName');
+    expect(res.body.description).to.equal('Description');
+    expect(res.body.price.value).to.equal(3 * data.raw1.price.value);
+  });
 
   // it('POST /products with raw product', async () => {
   //   const raw = {

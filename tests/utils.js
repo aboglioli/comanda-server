@@ -25,7 +25,7 @@ exports.login = async () => {
     });
   }
 
-  return adminToken;
+  return _.cloneDeep(adminToken);
 };
 
 exports.omitDeep = (collection, excludeKeys) => {

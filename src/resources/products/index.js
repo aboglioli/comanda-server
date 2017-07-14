@@ -74,5 +74,47 @@ module.exports = [
         }).unknown()
       }
     }
-  }
+  },
+  {
+    path: '/{productId}',
+    method: 'PUT',
+    config: {
+      handler: {
+        async: ProductHandler.put
+      },
+      auth: {
+        strategy: 'jwt',
+        scope: 'admin'
+      },
+      description: 'Update product',
+      tags: ['api', 'products'],
+      validate: {
+        params: {
+          productId: Joi.string().required()
+        },
+        payload: {
+          name: Joi.string().optional(),
+          description: Joi.string().optional(),
+          type: Joi.string().valid('raw', 'single', 'combination').optional(),
+          price: Joi.object({
+            value: Joi.number().required(),
+            quantity: Joi.object({
+              value: Joi.number().required(),
+              unit: Joi.string().required()
+            }).required()
+          }).optional(),
+          subproducts: Joi.array().items(Joi.object({
+            quantity: Joi.object({
+              value: Joi.number().required(),
+              unit: Joi.string().required()
+            }).required(),
+            product: Joi.string().required()
+          })).optional()
+        },
+        headers: Joi.object({
+          authorization: Joi.string().required()
+        }).unknown()
+      }
+    }
+  },
 ];

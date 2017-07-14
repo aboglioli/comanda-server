@@ -1,18 +1,23 @@
+const _ = require('lodash');
+
 const User = require('../src/models/user');
 const Product = require('../src/models/product');
 
-let isSetup = false;
 const data = {};
 
 exports.mockData = async () => {
-  if(!isSetup) {
+  if(_.isEmpty(data)) {
     // Users
-    data.admin = await User.create({
-      name: 'Admin',
-      email: 'admin@admin.com',
-      password: 'admin123',
-      scope: ['admin']
-    });
+    const existingAdmin = await User.getByEmail('admin@admin.com');
+
+    if(!existingAdmin) {
+      data.admin = await User.create({
+        name: 'Admin',
+        email: 'admin@admin.com',
+        password: 'admin123',
+        scope: ['admin']
+      });
+    }
 
     data.user = await User.create({
       name: 'User',
@@ -88,9 +93,7 @@ exports.mockData = async () => {
         product: data.single2._id
       }]
     });
-
-    isSetup = true;
   }
 
-  return data;
+  return _.cloneDeep(data);
 };
