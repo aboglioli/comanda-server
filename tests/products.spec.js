@@ -129,40 +129,4 @@ describe('Product', () => {
     expect(res.body.price.value).to.equal(3 * data.raw1.price.value);
   });
 
-  // it('POST /products with raw product', async () => {
-  //   const raw = {
-  //     name: 'Raw1',
-  //     price: {
-  //       value: 15,
-  //       unit: {
-  //         value: 1,
-  //         name: 'kg'
-  //       }
-  //     }
-  //   };
-
-  //   let res = await utils.request.post('products/raw')
-  //         .set('Authorization', adminToken)
-  //         .send(raw)
-  //         .expect(201);
-
-  //   let rawProductId = res.body._id;
-
-  //   const product = {
-  //     name: 'Product1',
-  //     rawProducts: [{
-  //       quantity: 2.5,
-  //       unit: 'kg',
-  //       product: rawProductId
-  //     }]
-  //   };
-
-  //   res = await utils.request.post('products')
-  //       .set('Authorization', adminToken)
-  //       .send(product)
-  //       .expect(201);
-
-  //   expect(res.body.total).to.equal(37.5);
-  // });
-
 });
