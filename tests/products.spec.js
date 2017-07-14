@@ -84,6 +84,7 @@ describe('Product', () => {
   });
 
   it('PUT /products', async () => {
+    // Create new product
     const newProduct = {
       name: 'NewProduct',
       type: 'single',
@@ -107,6 +108,7 @@ describe('Product', () => {
       .send(newProduct)
       .expect(201);
 
+    // Update product
     const productId = res.body._id;
 
     res = await utils.request.put('products/' + productId)
@@ -127,6 +129,26 @@ describe('Product', () => {
     expect(res.body.name).to.equal('NewName');
     expect(res.body.description).to.equal('Description');
     expect(res.body.price.value).to.equal(3 * data.raw1.price.value);
+
+    // Update subproduct
+    await utils.request.put('products/' + data.raw1._id)
+      .set('Authorization', adminToken)
+      .send({
+        price: {
+          value: 15,
+          quantity: {
+            value: 0.5,
+            unit: 'kg'
+          }
+        }
+      })
+      .expect(200);
+
+    res = await utils.request.get('products/' + productId)
+      .set('Authorization', adminToken)
+      .expect(200);
+
+    expect(res.body.price.value).to.equal(3 / 0.5  * 15);
   });
 
 });
