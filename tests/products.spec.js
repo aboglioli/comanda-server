@@ -7,23 +7,11 @@ const DATA = require('./mock');
 
 describe('Product', () => {
   let adminToken;
+  let data;
 
   before(async () => {
-    // await utils.mockData();
-    // adminToken = await utils.login();
-  });
-
-  describe('Model', () => {
-    it('should create', async () => {
-
-      // const products = await Product.find();
-      // expect(products.length).to.equal(5);
-      // expect(single1.subproducts[0].product.toObject()).to.deep.equal(raw1.toObject());
-      // expect(combined.subproducts[0].product.toObject()).to.deep.equal(single1.toObject());
-    });
-  });
-
-  describe('Resource', () => {
+    data = await utils.mockData();
+    adminToken = await utils.login();
   });
 
   // it('POST /products/raw', async () => {
