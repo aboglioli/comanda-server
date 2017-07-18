@@ -59,6 +59,7 @@ describe('Users', () => {
 
     expect(res.body).to.not.be.undefined;
     expect(res.body).to.have.all.keys('_id', 'name', 'user', 'email', 'scope', 'created_at', 'updated_at');
+    expect(res.body._id).to.equal(String(data.user._id));
     expect(res.body.name).to.equal('UserName');
     expect(res.body.email).to.equal('user@user.com');
 	});
