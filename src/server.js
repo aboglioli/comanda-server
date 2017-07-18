@@ -31,7 +31,7 @@ if (config.app.logging) {
       if(path.startsWith('/docs') || path.startsWith('/swagger'))
         return reply.continue();
 
-      console.log(request.path, request.query);
+      console.log(request.path, request.params, request.query);
 
       return reply.continue();
     }

@@ -11,7 +11,8 @@ module.exports = {
       version: 'v1'
     },
     jwtKey: env.JWT_KEY || 'qwerty',
-    logging: true
+    logging: true,
+    defaultAdmin: true
   },
   database: {
     host: env.DB_HOST || 'mongodb',
@@ -26,9 +27,5 @@ module.exports = {
     basePath: '/api/v1',
     documentationPath: '/docs',
     grouping: 'tags'
-    // tags: [{
-    //   name: 'hello',
-    //   description: 'Customer accounts'
-    // }]
   }
 };

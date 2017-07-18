@@ -2,7 +2,7 @@ const {generateHash} = require('../core/authentication');
 const UserSchema = require('./schemas/user');
 
 async function create(data) {
-  const existingUser = await getByEmail(data.email);
+  const existingUser = await getByUser(data.user);
 
   if(existingUser) {
     throw new Error('Existing user');
@@ -29,6 +29,20 @@ async function updateById(userId, data) {
   return await getById(userId);
 }
 
+async function getByUser(user, withPassword = false) {
+  if(withPassword) {
+    return await UserSchema
+      .findOne({user})
+      .select('-__v')
+      .exec();
+  }
+
+  return await UserSchema
+    .findOne({user})
+    .select('-password -__v')
+    .exec();
+}
+
 async function getById(userId) {
   return await UserSchema
     .findById(userId)
@@ -53,6 +67,10 @@ async function removeById(userId) {
   return await UserSchema.findById(userId).remove();
 }
 
+async function removeByUser(user) {
+  return await UserSchema.find({user}).remove();
+}
+
 async function removeByEmail(email) {
   return await UserSchema.find({email}).remove();
 }
@@ -65,10 +83,11 @@ module.exports = {
   create,
   updateById,
   getById,
+  getByUser,
   getByEmail,
   getAll,
-  removeByEmail,
   removeById,
+  removeByUser,
   removeByEmail,
   removeAll
 };

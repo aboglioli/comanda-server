@@ -3,6 +3,7 @@ const Joi = require('joi');
 const UsersHandler = require('./handlers');
 
 module.exports = [
+  // Admin
   {
     path: '',
     method: 'GET',
@@ -61,9 +62,10 @@ module.exports = [
       tags: ['api', 'users'],
       validate: {
         payload: {
-          name: Joi.string().optional(),
-          email: Joi.string().email().required(),
+          user: Joi.string().required(),
           password: Joi.string().required(),
+          name: Joi.string().optional(),
+          email: Joi.string().email().optional(),
           scope: Joi.array().items(Joi.string()).optional()
         },
         headers: Joi.object({
@@ -71,5 +73,79 @@ module.exports = [
         }).unknown()
       }
     }
-  }
+  },
+  {
+    path: '/{userId}',
+    method: 'PUT',
+    config: {
+      handler: {
+        async: UsersHandler.put
+      },
+      auth: {
+        strategy: 'jwt',
+        scope: 'admin'
+      },
+      description: 'Update user by id',
+      tags: ['api', 'users'],
+      validate: {
+        payload: {
+          name: Joi.string().optional(),
+          email: Joi.string().email().optional(),
+          password: Joi.string().optional(),
+          scope: Joi.array().items(Joi.string()).optional()
+        },
+        params: {
+          userId: Joi.string().required()
+        },
+        headers: Joi.object({
+          authorization: Joi.string().required()
+        }).unknown()
+      }
+    }
+  },
+  // User
+  {
+    path: '/me',
+    method: 'GET',
+    config: {
+      handler: {
+        async: UsersHandler.getMe
+      },
+      auth: {
+        strategy: 'jwt'
+      },
+      description: 'Get user by id',
+      tags: ['api', 'users'],
+      validate: {
+        headers: Joi.object({
+          authorization: Joi.string().required()
+        }).unknown()
+      }
+    }
+  },
+  {
+    path: '/me',
+    method: 'PUT',
+    config: {
+      handler: {
+        async: UsersHandler.putMe
+      },
+      auth: {
+        strategy: 'jwt'
+      },
+      description: 'Update logged in user',
+      tags: ['api', 'users'],
+      validate: {
+        payload: {
+          name: Joi.string().optional(),
+          email: Joi.string().email().optional(),
+          password: Joi.string().optional(),
+          scope: Joi.array().items(Joi.string()).optional()
+        },
+        headers: Joi.object({
+          authorization: Joi.string().required()
+        }).unknown()
+      }
+    }
+  },
 ];

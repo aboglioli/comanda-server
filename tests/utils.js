@@ -14,7 +14,7 @@ exports.login = async () => {
         'content-type': 'application/json'
       },
       json: true,
-      form: {email: 'admin@admin.com', password: 'admin123'}
+      form: {user: 'admin', password: 'admin123'}
     };
 
     return new Promise((resolve, reject) => {

@@ -5,18 +5,16 @@ const config = require('../../config');
 const User = require('../../models/user');
 const {comparePasswords} = require('../../core/authentication');
 
-async function get(request, reply) {
-  return reply(await User.getById(request.auth.credentials.id));
-}
-
 async function login(request, reply) {
-  const {email, password} = request.payload;
+  const user = await User.getByUser(request.payload.user, true);
 
-  const user = await User.getByEmail(email);
+  if(!user) {
+    return reply({message: 'The user does not exist'}).code(404);
+  }
 
-  const equalPasswords = await comparePasswords(password, user.password);
+  const equalPasswords = await comparePasswords(request.payload.password, user.password);
 
-  if(!user || !equalPasswords) {
+  if(!equalPasswords) {
     return reply({message: 'Invalid credentials'}).code(400);
   }
 
@@ -27,23 +25,6 @@ async function login(request, reply) {
   });
 }
 
-async function register(request, reply) {
-  try {
-    const user = await User.create(request.payload);
-    return reply(user).code(201);
-  } catch(e) {
-    return reply({message: e.message}).code(409);
-  }
-}
-
-async function put(request, reply) {
-  const user = await User.updateById(request.auth.credentials.id, request.payload);
-  return reply(user).code(200);
-}
-
 module.exports = {
-  get,
-  login,
-  register,
-  put
+  login
 };

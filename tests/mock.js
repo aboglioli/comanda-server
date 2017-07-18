@@ -8,19 +8,21 @@ const data = {};
 exports.mockData = async () => {
   if(_.isEmpty(data)) {
     // Users
-    const existingAdmin = await User.getByEmail('admin@admin.com');
-
-    if(!existingAdmin) {
+    try {
       data.admin = await User.create({
         name: 'Admin',
+        user: 'admin',
         email: 'admin@admin.com',
         password: 'admin123',
         scope: ['admin']
       });
+    } catch(e) {
+      console.log(e.message);
     }
 
     data.user = await User.create({
       name: 'User',
+      user: 'user',
       email: 'user@user.com',
       password: 'user123'
     });
