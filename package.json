@@ -4,9 +4,14 @@
   "description": "E-Commerce Backend API",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "mocha --recursive tests",
     "test-watch": "nodemon --exec \"mocha -R min\" tests"
+  },
+  "engines": {
+    "node": "8.0.0",
+    "npm": "5.0.x"
   },
   "repository": {
     "type": "git",

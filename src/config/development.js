@@ -17,7 +17,9 @@ module.exports = {
   database: {
     host: env.DB_HOST || 'mongodb',
     port: env.DB_PORT || 27017,
-    name: env.DB_NAME || 'comanda'
+    name: env.DB_NAME || 'comanda',
+    user: env.DB_USER,
+    password: env.DB_PASSWORD
   },
   swagger: {
     info: {

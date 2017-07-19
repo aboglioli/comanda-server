@@ -4,8 +4,15 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-module.exports = mongoose
-  .connect(`mongodb://${config.database.host}:${config.database.port}/${config.database.name}`);
+let dbConnection;
+
+if(config.database.user && config.database.password) {
+  dbConnection = mongoose.connect(`mongodb://${config.database.user}:${config.database.password}@${config.database.host}:${config.database.port}/${config.database.name}`);
+} else {
+  dbConnection = mongoose.connect(`mongodb://${config.database.host}:${config.database.port}/${config.database.name}`);
+}
+
+module.exports = dbConnection;
 
 if(config.app.defaultAdmin) {
   const User = require('../models/user');
