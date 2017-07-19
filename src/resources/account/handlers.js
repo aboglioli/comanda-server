@@ -5,7 +5,7 @@ const config = require('../../config');
 const User = require('../../models/user');
 const {comparePasswords} = require('../../core/authentication');
 
-async function login(request, reply) {
+exports.login = async function (request, reply) {
   const user = await User.getByUser(request.payload.user, true);
 
   if(!user) {
@@ -23,8 +23,4 @@ async function login(request, reply) {
       id: user._id
     }, config.app.jwtKey)
   });
-}
-
-module.exports = {
-  login
 };

@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 
 const UserSchema = require('../models/schemas/user');
 
-async function authenticate(decoded, request, callback) {
+exports.authenticate = async function (decoded, request, callback) {
   try {
     const user = await UserSchema.findById(decoded.id);
 
@@ -14,26 +14,20 @@ async function authenticate(decoded, request, callback) {
   } catch(err) {
     return callback(null, false);
   }
-}
+};
 
-function generateHash(password) {
+exports.generateHash = function (password) {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, 10, (err, hash) => {
       resolve(hash);
     });
   });
-}
+};
 
-function comparePasswords(password, hash) {
+exports.comparePasswords = function (password, hash) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, hash, (err, result) => {
       resolve(result);
     });
   });
-}
-
-module.exports = {
-  authenticate,
-  generateHash,
-  comparePasswords
 };

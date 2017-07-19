@@ -1,6 +1,6 @@
 const Units = require('./units');
 
-function calculate(product) {
+exports.calculate = function calculate(product) {
   if(product.type === 'raw') {
     return product.price.value;
   }
@@ -24,8 +24,4 @@ function calculate(product) {
 
       return price + quantityObj.value * calculate(subproduct);
     }, 0);
-}
-
-module.exports = {
-  calculate
 };

@@ -109,7 +109,7 @@ module.exports = [
     method: 'DELETE',
     config: {
       handler: {
-        async: UsersHandler.deleteById
+        async: UsersHandler.delete
       },
       auth: {
         strategy: 'jwt',

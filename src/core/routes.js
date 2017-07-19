@@ -1,6 +1,6 @@
 const joinUrl = require('url-join');
 
-function buildRoutes(config, routes) {
+exports.buildRoutes = function (config, routes) {
   let endpoints = [];
 
   Object.keys(routes).forEach(key => {
@@ -30,8 +30,4 @@ function buildRoutes(config, routes) {
   });
 
   return endpoints;
-}
-
-module.exports = {
-  buildRoutes
-}
+};

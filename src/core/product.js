@@ -1,6 +1,6 @@
 const Price = require('./price');
 
-function format(product) {
+exports.format = function format(product) {
   if(Array.isArray(product)) {
     return product.map(p => format(p));
   }
@@ -16,8 +16,4 @@ function format(product) {
   }
 
   return product;
-}
-
-module.exports = {
-  format
 };

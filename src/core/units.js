@@ -24,8 +24,10 @@ const AVAILABLE_UNITS = [
   ...volumeUnits.map(unit => unit.unit)
 ];
 
+exports.AVAILABLE_UNITS = AVAILABLE_UNITS;
+
 // {value, unit}
-function normalize(value, unitName) {
+exports.normalize = function (value, unitName) {
   let unit = massUnits.find(u => u.unit === unitName);
   const res = [];
 
@@ -43,9 +45,4 @@ function normalize(value, unitName) {
   res[0] = value * unit.multiplier;
 
   return res;
-}
-
-module.exports = {
-  normalize,
-  AVAILABLE_UNITS
 };

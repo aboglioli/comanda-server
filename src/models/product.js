@@ -1,46 +1,39 @@
 const ProductSchema = require('./schemas/product');
 
-async function create(data) {
+exports.create = async function (data) {
   const product = new ProductSchema(data);
   await product.save();
 
-  return await getById(product._id);
-}
+  return await this.getById(product._id);
+};
 
-async function updateById(productId, data) {
+exports.updateById = async function (productId, data) {
   await ProductSchema
     .findByIdAndUpdate(productId, {
       $set: data
     }) ;
 
-  return await getById(productId);
-}
+  return await this.getById(productId);
+};
 
-async function getById(productId) {
+exports.getById = async function (productId) {
   return await ProductSchema
     .findById(productId)
     .select('-__v')
     .exec();
-}
+};
 
-async function find(filters = {}) {
+exports.find = async function (filters = {}) {
   return await ProductSchema
     .find(filters)
     .select('-__v')
     .exec();
-}
+};
 
-async function removeById(productId) {
+exports.removeById = async function(productId) {
   return await ProductSchema.findById(productId).remove();
-}
+};
 
-async function removeAll() {
+exports.removeAll = async function() {
   return await ProductSchema.find({}).remove();
-}
-
-module.exports = {
-  create,
-  updateById,
-  getById,
-  find
 };
