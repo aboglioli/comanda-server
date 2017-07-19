@@ -104,6 +104,29 @@ module.exports = [
       }
     }
   },
+  {
+    path: '/{userId}',
+    method: 'DELETE',
+    config: {
+      handler: {
+        async: UsersHandler.deleteById
+      },
+      auth: {
+        strategy: 'jwt',
+        scope: 'admin'
+      },
+      description: 'Delete user by id',
+      tags: ['api', 'users'],
+      validate: {
+        params: {
+          userId: Joi.string().required()
+        },
+        headers: Joi.object({
+          authorization: Joi.string().required()
+        }).unknown()
+      }
+    }
+  },
   // User
   {
     path: '/me',

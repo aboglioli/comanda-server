@@ -4,7 +4,7 @@ async function create(data) {
   const product = new ProductSchema(data);
   await product.save();
 
-  return await findById(product._id);
+  return await getById(product._id);
 }
 
 async function updateById(productId, data) {
@@ -13,10 +13,10 @@ async function updateById(productId, data) {
       $set: data
     }) ;
 
-  return await findById(productId);
+  return await getById(productId);
 }
 
-async function findById(productId) {
+async function getById(productId) {
   return await ProductSchema
     .findById(productId)
     .select('-__v')
@@ -26,15 +26,6 @@ async function findById(productId) {
 async function find(filters = {}) {
   return await ProductSchema
     .find(filters)
-    .select('-__v')
-    .exec();
-}
-
-async function findByName(name) {
-  return await ProductSchema
-    .find({
-      name: {$regex: new RegExp(name, 'i')}
-    })
     .select('-__v')
     .exec();
 }
@@ -50,7 +41,6 @@ async function removeAll() {
 module.exports = {
   create,
   updateById,
-  findById,
-  find,
-  findByName
+  getById,
+  find
 };

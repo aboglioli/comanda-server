@@ -5,25 +5,19 @@ const Units = require('../../core/units');
 const ProductUtils = require('../../core/product');
 
 async function get(request, reply) {
-  let products;
+  const filters = request.query || {};
 
-  if(!_.isEmpty(request.query)) {
-    const keys = Object.keys(request.query);
-
-    if(keys.length === 1 && keys[0] === 'name') {
-      products = await Product.findByName(request.query.name);
-    } else {
-      products = await Product.find(request.query);
-    }
-  } else {
-    products = await Product.find();
+  if(filters.name) {
+    filters.name = {$regex: new RegExp(filters.name, 'i')};
   }
+
+  const products = await Product.find(filters);
 
   return reply(ProductUtils.format(products));
 }
 
 async function getById(request, reply) {
-  let product = await Product.findById(request.params.productId);
+  let product = await Product.getById(request.params.productId);
   return reply(ProductUtils.format(product));
 }
 

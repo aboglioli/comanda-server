@@ -52,6 +52,14 @@ describe('Product', () => {
     expect(res.body[1].name).to.equal('Single2');
   });
 
+  it('GET /products?type=%&name=%', async () => {
+    const res = await utils.request.get('products?type=raw&name=raw2')
+          .expect(200);
+
+    expect(res.body.length).to.equal(1);
+    expect(res.body[0].name).to.equal('Raw2');
+  });
+
   it('POST /products', async () => {
     const newProduct = {
       name: 'Single3',

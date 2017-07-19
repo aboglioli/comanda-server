@@ -1,5 +1,6 @@
 const User = require('../../models/user');
 
+// Admin
 async function get(request, reply) {
   return reply(await User.getAll());
 }
@@ -22,11 +23,16 @@ async function put(request, reply) {
     const user = await User.updateById(request.params.userId, request.payload);
     return reply(user).code(200);
   } catch(e) {
-    reply(e).code(404);
+    return reply(e).code(404);
   }
 }
 
+async function deleteById(request, reply) {
+  const user = await User.removeById(request.params.userId);
+  return reply(user).code(200);
+}
 
+// User
 async function getMe(request, reply) {
   return reply(await User.getById(request.auth.credentials.id));
 }
@@ -43,8 +49,9 @@ async function putMe(request, reply) {
 module.exports = {
   get,
   getById,
-  getMe,
   put,
-  putMe,
-  post
+  post,
+  deleteById,
+  getMe,
+  putMe
 };
