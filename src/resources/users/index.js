@@ -89,6 +89,7 @@ module.exports = [
       tags: ['api', 'users'],
       validate: {
         payload: {
+          user: Joi.string().optional(),
           name: Joi.string().optional(),
           email: Joi.string().email().optional(),
           password: Joi.string().optional(),
@@ -114,7 +115,7 @@ module.exports = [
       auth: {
         strategy: 'jwt'
       },
-      description: 'Get user by id',
+      description: 'Get logged in user',
       tags: ['api', 'users'],
       validate: {
         headers: Joi.object({
@@ -137,6 +138,7 @@ module.exports = [
       tags: ['api', 'users'],
       validate: {
         payload: {
+          user: Joi.string().optional(),
           name: Joi.string().optional(),
           email: Joi.string().email().optional(),
           password: Joi.string().optional(),
