@@ -4,8 +4,8 @@ const env = process.env;
 
 module.exports = {
   app: {
-    host: env.APP_HOST || '0.0.0.0',
-    port: env.APP_PORT || 3000,
+    host: env.HOST || '0.0.0.0',
+    port: env.PORT || 3000,
     routes: {
       prefix: 'api',
       version: 'v1'
