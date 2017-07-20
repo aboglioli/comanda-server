@@ -131,4 +131,27 @@ module.exports = [
       }
     }
   },
+  {
+    path: '/{productId}',
+    method: 'DELETE',
+    config: {
+      handler: {
+        async: ProductHandler.delete
+      },
+      auth: {
+        strategy: 'jwt',
+        scope: 'admin'
+      },
+      description: 'Delete product by id',
+      tags: ['api', 'products'],
+      validate: {
+        params: {
+          productId: Joi.string().required()
+        },
+        headers: Joi.object({
+          authorization: Joi.string().required()
+        }).unknown()
+      }
+    }
+  }
 ];

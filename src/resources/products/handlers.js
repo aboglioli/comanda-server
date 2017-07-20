@@ -42,3 +42,8 @@ exports.put = async function (request, reply) {
     return reply({message: e.message}).code(400);
   }
 };
+
+exports.delete = async function (request, reply) {
+  await Product.removeById(request.params.productId);
+  return reply({removed: true}).reply(200);
+};

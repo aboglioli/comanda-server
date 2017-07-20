@@ -28,8 +28,8 @@ exports.put = async function (request, reply) {
 };
 
 exports.delete = async function (request, reply) {
-  const user = await User.removeById(request.params.userId);
-  return reply(user).code(200);
+  await User.removeById(request.params.userId);
+  return reply({removed: true}).code(200);
 };
 
 // User
