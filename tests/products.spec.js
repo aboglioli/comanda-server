@@ -16,7 +16,8 @@ describe('Product', () => {
 
   it('GET /products', async () => {
     const res = await utils.request.get('products')
-          .expect(200);
+      .set('Authorization', adminToken)
+      .expect(200);
 
     expect(res.body.length).to.equal(5);
     expect(res.body[0].name).to.equal(data.raw1.name);
@@ -29,6 +30,7 @@ describe('Product', () => {
 
   it('GET /products/{productId}', async () => {
     const res = await utils.request.get('products/' + data.combined._id)
+      .set('Authorization', adminToken)
       .expect(200);
 
     expect(res.body.name).to.equal('Combination');
@@ -36,6 +38,7 @@ describe('Product', () => {
 
   it('GET /products?name=%', async () => {
     const res = await utils.request.get('products?name=raw')
+      .set('Authorization', adminToken)
       .expect(200);
 
     expect(res.body.length).to.equal(2);
@@ -45,6 +48,7 @@ describe('Product', () => {
 
   it('GET /products?type=%', async () => {
     const res = await utils.request.get('products?type=single')
+      .set('Authorization', adminToken)
       .expect(200);
 
     expect(res.body.length).to.equal(2);
@@ -54,7 +58,8 @@ describe('Product', () => {
 
   it('GET /products?type=%&name=%', async () => {
     const res = await utils.request.get('products?type=raw&name=raw2')
-          .expect(200);
+      .set('Authorization', adminToken)
+      .expect(200);
 
     expect(res.body.length).to.equal(1);
     expect(res.body[0].name).to.equal('Raw2');

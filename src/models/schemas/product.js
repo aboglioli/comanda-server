@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
-const {AVAILABLE_UNITS} = require('../../core/units');
-const ProductTypes = ['raw', 'single', 'combination'];
+const {PRODUCT_TYPES, MASS_UNITS, VOLUME_UNITS, UNIT} = require('../../core/enums');
 
 const QuantitySchema = {
   value: {type: Number, required: true},
-  unit: {type: String, required: true, enum: AVAILABLE_UNITS}
+  unit: {type: String, required: true, enum: [...MASS_UNITS, ...VOLUME_UNITS, UNIT]}
 };
 
 const PriceSchema = {
@@ -18,7 +17,7 @@ const PriceSchema = {
 const ProductSchema = new mongoose.Schema({
   name: {type: String, required: true},
   description: String,
-  type: {type: String, enum: ProductTypes},
+  type: {type: String, enum: PRODUCT_TYPES},
   price: {type: PriceSchema, required: function() {
     return this.type === 'raw';
   }},

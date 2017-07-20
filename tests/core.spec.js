@@ -9,7 +9,6 @@ const {normalize} = require('../src/core/units');
 const {calculate} = require('../src/core/price');
 const {materialize} = require('../src/core/product');
 
-
 describe('Core', () => {
   describe('Routes', () => {
     it('should generate routes with prefix and version', () => {

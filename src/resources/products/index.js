@@ -10,13 +10,20 @@ module.exports = [
       handler: {
         async: ProductHandler.get
       },
+      auth: {
+        strategy: 'jwt',
+        scope: 'admin'
+      },
       description: 'Get all the products',
       tags: ['api', 'products'],
       validate: {
         query: {
           name: Joi.string().optional(),
           type: Joi.string().valid('raw', 'single', 'combination').optional()
-        }
+        },
+        headers: Joi.object({
+          authorization: Joi.string().required()
+        }).unknown()
       }
     }
   },
@@ -27,12 +34,19 @@ module.exports = [
       handler: {
         async: ProductHandler.getById
       },
+      auth: {
+        strategy: 'jwt',
+        scope: 'admin'
+      },
       description: 'Get product by id',
       tags: ['api', 'products'],
       validate: {
         params: {
           productId: Joi.string().required()
-        }
+        },
+        headers: Joi.object({
+          authorization: Joi.string().required()
+        }).unknown()
       }
     }
   },
