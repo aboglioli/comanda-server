@@ -26,11 +26,19 @@ exports.post = async function (request, reply) {
     return reply({message: 'Only raw products can have price'}).code(400);
   }
 
-  let product = await Product.create(request.payload);
-  return reply(ProductUtils.materialize(product)).code(201);
+  try {
+    let product = await Product.create(request.payload);
+    return reply(ProductUtils.materialize(product)).code(201);
+  } catch(e) {
+    return reply({message: e.message}).code(400);
+  }
 };
 
 exports.put = async function (request, reply) {
-  let product = await Product.updateById(request.params.productId, request.payload);
-  return reply(ProductUtils.materialize(product)).code(200);
+  try {
+    let product = await Product.updateById(request.params.productId, request.payload);
+    return reply(ProductUtils.materialize(product)).code(200);
+  } catch(e) {
+    return reply({message: e.message}).code(400);
+  }
 };

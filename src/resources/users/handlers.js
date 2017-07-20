@@ -14,7 +14,7 @@ exports.post = async function (request, reply) {
     const user = await User.create(request.payload);
     return reply(user).code(201);
   } catch(e) {
-    reply(e).code(404);
+    reply({message: e.message}).code(400);
   }
 };
 
@@ -23,7 +23,7 @@ exports.put = async function (request, reply) {
     const user = await User.updateById(request.params.userId, request.payload);
     return reply(user).code(200);
   } catch(e) {
-    return reply(e).code(404);
+    return reply({message: e.message}).code(400);
   }
 };
 
@@ -42,6 +42,6 @@ exports.putMe = async function (request, reply) {
     const user = await User.updateById(request.auth.credentials.id, request.payload);
     return reply(user).code(200);
   } catch(e) {
-    reply(e).code(404);
+    reply({message: e.message}).code(400);
   }
 };

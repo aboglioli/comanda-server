@@ -7,4 +7,4 @@ RUN npm install nodemon -g
 
 EXPOSE 3000
 
-CMD npm install && npm start
+CMD npm install && npm run dev
