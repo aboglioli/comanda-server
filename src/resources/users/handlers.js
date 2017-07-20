@@ -2,7 +2,7 @@ const User = require('../../models/user');
 
 // Admin
 exports.get = async function (request, reply) {
-  return reply(await User.getAll());
+  return reply(await User.find());
 };
 
 exports.getById = async function (request, reply) {

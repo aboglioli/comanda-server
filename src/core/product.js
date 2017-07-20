@@ -1,8 +1,8 @@
 const Price = require('./price');
 
-exports.format = function format(product) {
+exports.materialize = function materialize(product) {
   if(Array.isArray(product)) {
-    return product.map(p => format(p));
+    return product.map(p => materialize(p));
   }
 
   if(product.type !== 'raw') {

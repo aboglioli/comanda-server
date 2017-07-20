@@ -26,7 +26,7 @@ const AVAILABLE_UNITS = [
 
 exports.AVAILABLE_UNITS = AVAILABLE_UNITS;
 
-// {value, unit}
+// @return [value, unitName]
 exports.normalize = function (value, unitName) {
   let unit = massUnits.find(u => u.unit === unitName);
   const res = [];

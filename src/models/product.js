@@ -34,6 +34,6 @@ exports.removeById = async function(productId) {
   return await ProductSchema.findById(productId).remove();
 };
 
-exports.removeAll = async function() {
-  return await ProductSchema.find({}).remove();
+exports.remove = async function(filters = {}) {
+  return await ProductSchema.find().remove();
 };

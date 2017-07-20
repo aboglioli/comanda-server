@@ -13,12 +13,12 @@ exports.get = async function (request, reply) {
 
   const products = await Product.find(filters);
 
-  return reply(ProductUtils.format(products));
+  return reply(ProductUtils.materialize(products));
 };
 
 exports.getById = async function (request, reply) {
   let product = await Product.getById(request.params.productId);
-  return reply(ProductUtils.format(product));
+  return reply(ProductUtils.materialize(product));
 };
 
 exports.post = async function (request, reply) {
@@ -27,10 +27,10 @@ exports.post = async function (request, reply) {
   }
 
   let product = await Product.create(request.payload);
-  return reply(ProductUtils.format(product)).code(201);
+  return reply(ProductUtils.materialize(product)).code(201);
 };
 
 exports.put = async function (request, reply) {
   let product = await Product.updateById(request.params.productId, request.payload);
-  return reply(ProductUtils.format(product)).code(200);
+  return reply(ProductUtils.materialize(product)).code(200);
 };

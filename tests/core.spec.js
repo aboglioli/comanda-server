@@ -7,7 +7,7 @@ const routes = require('../src/routes');
 const {buildRoutes} = require('../src/core/routes');
 const {normalize} = require('../src/core/units');
 const {calculate} = require('../src/core/price');
-const {format} = require('../src/core/product');
+const {materialize} = require('../src/core/product');
 
 
 describe('Core', () => {
@@ -85,10 +85,10 @@ describe('Core', () => {
   });
 
   describe('Product', () => {
-    it('should format products', async () => {
+    it('should materialize products', async () => {
       const data = await utils.mockData();
 
-      const formatted = format([data.raw1, data.raw2, data.single1, data.single2, data.combined]);
+      const formatted = materialize([data.raw1, data.raw2, data.single1, data.single2, data.combined]);
 
       expect(formatted.length).to.equal(5);
       expect(formatted[0].price).to.deep.equal(data.raw1.price);

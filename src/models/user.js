@@ -50,15 +50,9 @@ exports.getById = async function (userId) {
     .exec();
 };
 
-exports.getByEmail = async function (email) {
+exports.find = async function (filters = {}) {
   return await UserSchema
-    .findOne({email})
-    .exec();
-};
-
-exports.getAll = async function () {
-  return await UserSchema
-    .find({})
+    .find(filters)
     .select('-password -__v')
     .exec();
 };
@@ -71,23 +65,6 @@ exports.removeByUser = async function (user) {
   return await UserSchema.find({user}).remove();
 };
 
-exports.removeByEmail = async function (email) {
-  return await UserSchema.find({email}).remove();
-};
-
 exports.removeAll = async function () {
   return await UserSchema.remove({});
-};;
-
-// module.exports = {
-//   create,
-//   updateById,
-//   getById,
-//   getByUser,
-//   getByEmail,
-//   getAll,
-//   removeById,
-//   removeByUser,
-//   removeByEmail,
-//   removeAll
-// };
+};
