@@ -19,7 +19,7 @@ describe('Users', () => {
       .set('Authorization', adminToken)
       .expect(200);
 
-    expect(res.body.length === 2).to.be.true;
+    expect(res.body.length).to.equal(2);
 	});
 
 	it('GET /users/{userId}', async () => {
