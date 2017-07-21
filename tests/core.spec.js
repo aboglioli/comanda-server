@@ -6,8 +6,7 @@ const routes = require('../src/routes');
 
 const {buildRoutes} = require('../src/core/routes');
 const {normalize} = require('../src/core/units');
-const {calculate} = require('../src/core/price');
-const {materialize} = require('../src/core/product');
+const {calculatePrice, materialize} = require('../src/core/product');
 
 describe('Core', () => {
   describe('Routes', () => {
@@ -66,14 +65,14 @@ describe('Core', () => {
   });
 
   describe('Price', () => {
-    it('should calculate() price of product with subproducts (nested products)', async () => {
+    it('should calculatePrice() of product with subproducts (nested products)', async () => {
       const data = await utils.mockData();
 
-      const raw1Price = calculate(data.raw1),
-            raw2Price = calculate(data.raw2),
-            single1Price = calculate(data.single1),
-            single2Price = calculate(data.single2),
-            combinedPrice = calculate(data.combined);
+      const raw1Price = calculatePrice(data.raw1),
+            raw2Price = calculatePrice(data.raw2),
+            single1Price = calculatePrice(data.single1),
+            single2Price = calculatePrice(data.single2),
+            combinedPrice = calculatePrice(data.combined);
 
       expect(raw1Price).to.equal(20);
       expect(raw2Price).to.equal(10);

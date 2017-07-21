@@ -51,3 +51,19 @@ exports.delete = async function (request, reply) {
   await Product.removeById(request.params.productId);
   return reply({removed: true}).reply(200);
 };
+
+exports.price = async function (request, reply) {
+  const products = await Promise.all(request.payload.products.map(async (product) => {
+    const productId = product.product;
+
+    product.product = await Product.getById(productId);
+
+    return product;
+  }));
+
+  const price = ProductUtils.calculatePrice({
+    subproducts: products
+  });
+
+  return reply({price}).reply(200);
+};

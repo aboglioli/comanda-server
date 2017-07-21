@@ -173,4 +173,30 @@ describe('Product', () => {
     expect(res.body.price.value).to.equal(3 / 0.5  * 15);
   });
 
+  // Utils
+  it('POST /products/price', async () => {
+    // TODO: raw1 was modified before. It should not.
+
+    const products = [{
+      quantity: {
+        value: 2,
+        unit: 'kg'
+      },
+      product: data.raw1._id
+    }, {
+      quantity: {
+        value: 2,
+        unit: 'l'
+      },
+      product: data.raw2._id
+    }];
+
+    const res = await utils.request.post('products/price')
+        .send({products})
+        .set('Authorization', adminToken)
+        .expect(200);
+
+    expect(res.body.price).to.equal(4 * 15 + 2 * 10);
+  });
+
 });

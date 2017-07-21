@@ -153,5 +153,35 @@ module.exports = [
         }).unknown()
       }
     }
+  },
+  // Utils
+  {
+    path: '/price',
+    method: 'POST',
+    config: {
+      handler: {
+        async: ProductHandler.price
+      },
+      auth: {
+        strategy: 'jwt',
+        scope: 'admin'
+      },
+      description: 'Delete product by id',
+      tags: ['api', 'products'],
+      validate: {
+        payload: {
+          products: Joi.array().items(Joi.object({
+            quantity: Joi.object({
+              value: Joi.number().required(),
+              unit: Joi.string().required()
+            }).required(),
+            product: Joi.string().required()
+          })).optional()
+        },
+        headers: Joi.object({
+          authorization: Joi.string().required()
+        }).unknown()
+      }
+    }
   }
 ];
