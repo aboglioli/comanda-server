@@ -19,7 +19,7 @@ module.exports = [
       validate: {
         query: {
           name: Joi.string().optional(),
-          type: Joi.string().valid('raw', 'single', 'combination').optional()
+          type: Joi.string().valid('raw', 'product', 'single', 'combination').optional()
         },
         headers: Joi.object({
           authorization: Joi.string().required()

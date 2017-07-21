@@ -11,6 +11,10 @@ exports.get = async function (request, reply) {
     filters.name = {$regex: new RegExp(filters.name, 'i')};
   }
 
+  if(filters.type && filters.type === 'product') {
+    filters.type = {$regex: new RegExp('(single|combination)')};
+  }
+
   const products = await Product.find(filters);
 
   return reply(ProductUtils.materialize(products));
