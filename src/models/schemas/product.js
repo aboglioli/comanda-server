@@ -27,14 +27,14 @@ const ProductSchema = new mongoose.Schema({
   }]
 });
 
-const populateSubproducts = function (next) {
-  this.populate('subproducts.product');
-  next();
-};
+// const populateSubproducts = function (next) {
+//   this.populate('subproducts.product');
+//   next();
+// };
 
-ProductSchema
-  .pre('find', populateSubproducts)
-  .pre('findOne', populateSubproducts)
-  .pre('findById', populateSubproducts);
+// ProductSchema
+//   .pre('find', populateSubproducts)
+//   .pre('findOne', populateSubproducts)
+//   .pre('findById', populateSubproducts);
 
 module.exports = mongoose.model('Product', ProductSchema);

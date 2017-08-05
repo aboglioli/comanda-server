@@ -63,15 +63,6 @@ describe('Product', () => {
 
     expect(res.body.length).to.equal(1);
     expect(res.body[0].name).to.equal('Raw2');
-
-    res = await utils.request.get('products?type=product')
-          .set('Authorization', adminToken)
-          .expect(200);
-
-    expect(res.body.length).to.equal(3);
-    res.body.forEach(product => {
-      expect(product.type).to.match(/(single|combination)/)
-    });
   });
 
   it('POST /products', async () => {
