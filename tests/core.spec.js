@@ -64,29 +64,30 @@ describe('Core', () => {
     });
   });
 
-  describe('Price', () => {
+  describe('Price', async () => {
     it('should calculatePrice() of product with subproducts (nested products)', async () => {
       const data = await utils.mockData();
 
-      const raw1Price = calculatePrice(data.raw1),
-            raw2Price = calculatePrice(data.raw2),
-            single1Price = calculatePrice(data.single1),
-            single2Price = calculatePrice(data.single2),
-            combinedPrice = calculatePrice(data.combined);
+      const raw1Price = data.raw1.price.value,
+            raw2Price = data.raw2.price.value;
 
-      expect(raw1Price).to.equal(20);
-      expect(raw2Price).to.equal(10);
+      const single1Price = await calculatePrice(data.single1),
+            single2Price = await calculatePrice(data.single2),
+            combinedPrice = await calculatePrice(data.combined);
+
+      console.log('single1Price', single1Price);
+
       expect(single1Price).to.equal(0.5 * raw1Price + 5 * raw2Price);
       expect(single2Price).to.equal(2 * raw1Price);
       expect(combinedPrice).to.equal(3 * single1Price + 2 * single2Price);
     });
   });
 
-  describe('Product', () => {
+  describe('Product', async () => {
     it('should materialize products', async () => {
       const data = await utils.mockData();
 
-      const formatted = materialize([data.raw1, data.raw2, data.single1, data.single2, data.combined]);
+      const formatted = await materialize([data.raw1, data.raw2, data.single1, data.single2, data.combined]);
 
       expect(formatted.length).to.equal(5);
       expect(formatted[0].price).to.deep.equal(data.raw1.price);

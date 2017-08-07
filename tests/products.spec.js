@@ -93,7 +93,6 @@ describe('Product', () => {
     expect(res.body.name).to.equal(newProduct.name);
     expect(res.body.type).to.equal(newProduct.type);
     expect(res.body.price.value).to.equal(2 * 20 + 0.8 * 10);
-    expect(res.body.subproducts[0].product._id.toString()).to.equal(data.raw1._id.toString());
   });
 
   it('PUT /products', async () => {

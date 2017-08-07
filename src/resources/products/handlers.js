@@ -13,12 +13,12 @@ exports.get = async function (request, reply) {
 
   const products = await Product.find(filters);
 
-  return reply(ProductUtils.materialize(products));
+  return reply(await ProductUtils.materialize(products));
 };
 
 exports.getById = async function (request, reply) {
   let product = await Product.getById(request.params.productId);
-  return reply(ProductUtils.materialize(product));
+  return reply(await ProductUtils.materialize(product));
 };
 
 exports.post = async function (request, reply) {
@@ -28,7 +28,7 @@ exports.post = async function (request, reply) {
 
   try {
     let product = await Product.create(request.payload);
-    return reply(ProductUtils.materialize(product)).code(201);
+    return reply(await ProductUtils.materialize(product)).code(201);
   } catch(e) {
     return reply({message: e.message}).code(400);
   }
@@ -37,7 +37,7 @@ exports.post = async function (request, reply) {
 exports.put = async function (request, reply) {
   try {
     let product = await Product.updateById(request.params.productId, request.payload);
-    return reply(ProductUtils.materialize(product)).code(200);
+    return reply(await ProductUtils.materialize(product)).code(200);
   } catch(e) {
     return reply({message: e.message}).code(400);
   }
@@ -57,7 +57,7 @@ exports.price = async function (request, reply) {
     return product;
   }));
 
-  const price = ProductUtils.calculatePrice({
+  const price = await ProductUtils.calculatePrice({
     subproducts: products
   });
 
