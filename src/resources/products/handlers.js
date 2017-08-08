@@ -63,3 +63,14 @@ exports.price = async function (request, reply) {
 
   return reply({price}).reply(200);
 };
+
+exports.subproducts = async function (request, reply) {
+  const product = await Product.getById(request.params.productId);
+
+  const subproducts = await Promise.all(product.subproducts.map(async (subproduct) => {
+    const product = await Product.getById(subproduct.product);
+    return Object.assign({}, subproduct, {product});
+  }));
+
+  return reply(subproducts).reply(200);
+};

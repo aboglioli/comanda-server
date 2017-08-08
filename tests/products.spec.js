@@ -3,13 +3,12 @@ const {expect} = require('chai');
 const [server, utils] = require('./index');
 const User = require('../src/models/user');
 const Product = require('../src/models/product');
-const DATA = require('./mock');
 
 describe('Product', () => {
   let adminToken;
   let data;
 
-  before(async () => {
+  beforeEach(async () => {
     data = await utils.mockData();
     adminToken = await utils.login();
   });
@@ -65,6 +64,17 @@ describe('Product', () => {
     expect(res.body[0].name).to.equal('Raw2');
   });
 
+  it('GET /products/{productId}/subproducts', async () => {
+    let res = await utils.request.get('products/' + data.single1._id + '/subproducts')
+        .set('Authorization', adminToken)
+        .expect(200);
+
+    expect(res.body).to.be.an('array');
+    expect(res.body.length).to.equal(2);
+    expect(res.body[0].product._id.toString()).to.equal(data.raw1._id.toString());
+    expect(res.body[0].product.name).to.equal(data.raw1.name);
+  });
+
   it('POST /products', async () => {
     const newProduct = {
       name: 'Single3',
@@ -93,6 +103,8 @@ describe('Product', () => {
     expect(res.body.name).to.equal(newProduct.name);
     expect(res.body.type).to.equal(newProduct.type);
     expect(res.body.price.value).to.equal(2 * 20 + 0.8 * 10);
+    expect(res.body.subproducts[0].product.toString()).to.equal(data.raw1._id.toString());
+    expect(res.body.subproducts[1].product.toString()).to.equal(data.raw2._id.toString());
   });
 
   it('PUT /products', async () => {
@@ -163,10 +175,16 @@ describe('Product', () => {
     expect(res.body.price.value).to.equal(3 / 0.5  * 15);
   });
 
+  it('DELETE /products/{productId}', async () => {
+    let res = await utils.request.delete('products/' + data.raw1._id)
+      .set('Authorization', adminToken)
+      .expect(200);
+
+    expect(res.body.removed).to.equal(true);
+  });
+
   // Utils
   it('POST /products/price', async () => {
-    // TODO: raw1 was modified before. It should not.
-
     const products = [{
       quantity: {
         value: 2,
@@ -186,7 +204,7 @@ describe('Product', () => {
         .set('Authorization', adminToken)
         .expect(200);
 
-    expect(res.body.price).to.equal(4 * 15 + 2 * 10);
+    expect(res.body.price).to.equal(2 * 20 + 2 * 10);
   });
 
 });

@@ -20,20 +20,20 @@ exports.getById = async function (productId) {
   return await ProductSchema
     .findById(productId)
     .select('-__v')
-    .exec();
+    .lean();
 };
 
 exports.find = async function (filters = {}) {
   return await ProductSchema
     .find(filters)
     .select('-__v')
-    .exec();
+    .lean();
 };
 
 exports.removeById = async function(productId) {
   return await ProductSchema.findById(productId).remove();
 };
 
-exports.remove = async function(filters = {}) {
+exports.removeAll = async function(filters = {}) {
   return await ProductSchema.find().remove();
 };

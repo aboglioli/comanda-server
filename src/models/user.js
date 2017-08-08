@@ -66,5 +66,5 @@ exports.removeByUser = async function (user) {
 };
 
 exports.removeAll = async function () {
-  return await UserSchema.remove({});
+  return await UserSchema.find().remove();
 };

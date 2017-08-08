@@ -75,8 +75,6 @@ describe('Core', () => {
             single2Price = await calculatePrice(data.single2),
             combinedPrice = await calculatePrice(data.combined);
 
-      console.log('single1Price', single1Price);
-
       expect(single1Price).to.equal(0.5 * raw1Price + 5 * raw2Price);
       expect(single2Price).to.equal(2 * raw1Price);
       expect(combinedPrice).to.equal(3 * single1Price + 2 * single2Price);

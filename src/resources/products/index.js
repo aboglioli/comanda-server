@@ -1,6 +1,7 @@
 const Joi = require('joi');
 
 const ProductHandler = require('./handlers');
+const { PRODUCT_TYPES  } = require('../../core/enums');
 
 module.exports = [
   {
@@ -19,7 +20,7 @@ module.exports = [
       validate: {
         query: {
           name: Joi.string().optional(),
-          type: Joi.string().valid('raw', 'product', 'single', 'combination').optional()
+          type: Joi.string().valid(...PRODUCT_TYPES).optional()
         },
         headers: Joi.object({
           authorization: Joi.string().required()
@@ -39,6 +40,29 @@ module.exports = [
         scope: 'admin'
       },
       description: 'Get product by id',
+      tags: ['api', 'products'],
+      validate: {
+        params: {
+          productId: Joi.string().required()
+        },
+        headers: Joi.object({
+          authorization: Joi.string().required()
+        }).unknown()
+      }
+    }
+  },
+  {
+    path: '/{productId}/subproducts',
+    method: 'GET',
+    config: {
+      handler: {
+        async: ProductHandler.subproducts
+      },
+      auth: {
+        strategy: 'jwt',
+        scope: 'admin'
+      },
+      description: 'Get subproducts from a product',
       tags: ['api', 'products'],
       validate: {
         params: {
