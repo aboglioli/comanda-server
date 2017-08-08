@@ -2,7 +2,7 @@ const {generateHash} = require('../core/authentication');
 const UserSchema = require('./schemas/user');
 
 exports.create = async function (data) {
-  const existingUser = await this.getByUser(data.user);
+  const existingUser = await this.findOne({user: data.user});
 
   if(existingUser) {
     throw new Error('Existing user');
@@ -29,20 +29,6 @@ exports.updateById = async function (userId, data) {
   return await this.getById(userId);
 };
 
-exports.getByUser = async function (user, withPassword = false) {
-  if(withPassword) {
-    return await UserSchema
-      .findOne({user})
-      .select('-__v')
-      .exec();
-  }
-
-  return await UserSchema
-    .findOne({user})
-    .select('-password -__v')
-    .exec();
-};
-
 exports.getById = async function (userId) {
   return await UserSchema
     .findById(userId)
@@ -50,7 +36,28 @@ exports.getById = async function (userId) {
     .exec();
 };
 
-exports.find = async function (filters = {}) {
+exports.findOne = async function(filters = {}, withPassword = false) {
+  if(withPassword) {
+    return await UserSchema
+      .findOne(filters)
+      .select('-__v')
+      .exec();
+  }
+
+  return await UserSchema
+    .findOne(filters)
+    .select('-password -__v')
+    .exec();
+}
+
+exports.find = async function (filters = {}, withPassword = false) {
+  if(withPassword) {
+    return await UserSchema
+      .find(filters)
+      .select('-__v')
+      .exec();
+  }
+
   return await UserSchema
     .find(filters)
     .select('-password -__v')
@@ -61,10 +68,6 @@ exports.removeById = async function (userId) {
   return await UserSchema.findById(userId).remove();
 };
 
-exports.removeByUser = async function (user) {
-  return await UserSchema.find({user}).remove();
-};
-
-exports.removeAll = async function () {
-  return await UserSchema.find().remove();
+exports.remove = async function (filters = {}) {
+  return await UserSchema.find(filters).remove();
 };

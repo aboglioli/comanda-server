@@ -7,7 +7,7 @@ const data = {};
 
 exports.mockData = async () => {
   // Users
-  await User.removeAll();
+  await User.remove();
 
   data.admin = await User.create({
     name: 'Admin',
@@ -25,7 +25,7 @@ exports.mockData = async () => {
   });
 
   // Products
-  await Product.removeAll();
+  await Product.remove();
 
   data.raw1 = await Product.create({
     name: 'Raw1',

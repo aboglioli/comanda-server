@@ -6,7 +6,7 @@ const User = require('../../models/user');
 const {comparePasswords} = require('../../core/authentication');
 
 exports.login = async function (request, reply) {
-  const user = await User.getByUser(request.payload.user, true);
+  const user = await User.findOne({user: request.payload.user}, true);
 
   if(!user) {
     return reply({message: 'The user does not exist'}).code(404);

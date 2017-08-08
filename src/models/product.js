@@ -23,6 +23,13 @@ exports.getById = async function (productId) {
     .lean();
 };
 
+exports.findOne = async function (filters = {}) {
+  return await ProductSchema
+    .findOne(filters)
+    .select('-__v')
+    .lean();
+};
+
 exports.find = async function (filters = {}) {
   return await ProductSchema
     .find(filters)
@@ -34,6 +41,6 @@ exports.removeById = async function(productId) {
   return await ProductSchema.findById(productId).remove();
 };
 
-exports.removeAll = async function(filters = {}) {
-  return await ProductSchema.find().remove();
+exports.remove = async function(filters = {}) {
+  return await ProductSchema.find(filters).remove();
 };
