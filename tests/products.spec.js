@@ -27,18 +27,10 @@ describe('Product', () => {
     expect(res.body[4].price.value).to.equal(combinedPrice);
   });
 
-  it('GET /products/{productId}', async () => {
-    const res = await utils.request.get('products/' + data.combined._id)
-      .set('Authorization', adminToken)
-      .expect(200);
-
-    expect(res.body.name).to.equal('Combination');
-  });
-
   it('GET /products?name=%', async () => {
     const res = await utils.request.get('products?name=raw')
-      .set('Authorization', adminToken)
-      .expect(200);
+          .set('Authorization', adminToken)
+          .expect(200);
 
     expect(res.body.length).to.equal(2);
     expect(res.body[0].name).to.equal('Raw1');
@@ -47,8 +39,8 @@ describe('Product', () => {
 
   it('GET /products?type=%', async () => {
     const res = await utils.request.get('products?type=single')
-      .set('Authorization', adminToken)
-      .expect(200);
+          .set('Authorization', adminToken)
+          .expect(200);
 
     expect(res.body.length).to.equal(2);
     expect(res.body[0].name).to.equal('Single1');
@@ -57,11 +49,19 @@ describe('Product', () => {
 
   it('GET /products?type=%&name=%', async () => {
     let res = await utils.request.get('products?type=raw&name=raw2')
-      .set('Authorization', adminToken)
-      .expect(200);
+        .set('Authorization', adminToken)
+        .expect(200);
 
     expect(res.body.length).to.equal(1);
     expect(res.body[0].name).to.equal('Raw2');
+  });
+
+  it('GET /products/{productId}', async () => {
+    const res = await utils.request.get('products/' + data.combined._id)
+      .set('Authorization', adminToken)
+      .expect(200);
+
+    expect(res.body.name).to.equal('Combination');
   });
 
   it('GET /products/{productId}/subproducts', async () => {
@@ -107,7 +107,7 @@ describe('Product', () => {
     expect(res.body.subproducts[1].product.toString()).to.equal(data.raw2._id.toString());
   });
 
-  it('PUT /products', async () => {
+  it('PUT /products/{productId}', async () => {
     // Create new product
     const newProduct = {
       name: 'NewProduct',
