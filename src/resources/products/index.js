@@ -91,7 +91,7 @@ module.exports = [
         payload: {
           name: Joi.string().required(),
           description: Joi.string().optional(),
-          type: Joi.string().valid('raw', 'single', 'combination').required(),
+          type: Joi.string().valid(...PRODUCT_TYPES).required(),
           price: Joi.object({
             value: Joi.number().required(),
             quantity: Joi.object({
@@ -133,7 +133,7 @@ module.exports = [
         payload: {
           name: Joi.string().optional(),
           description: Joi.string().optional(),
-          type: Joi.string().valid('raw', 'single', 'combination').optional(),
+          type: Joi.string().valid(...PRODUCT_TYPES).optional(),
           price: Joi.object({
             value: Joi.number().required(),
             quantity: Joi.object({

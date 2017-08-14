@@ -61,6 +61,14 @@ describe('Core', () => {
       [value, unit] = normalize(20, 'kl');
       expect(value).to.equal(20000.0);
       expect(unit).to.equal('l');
+
+      [value, unit] = normalize(1, 'dm3');
+      expect(value).to.equal(1.0);
+      expect(unit).to.equal('dm3');
+
+      [value, unit] = normalize(1, 'm3');
+      expect(value).to.equal(1000.0);
+      expect(unit).to.equal('dm3');
     });
   });
 
@@ -71,13 +79,13 @@ describe('Core', () => {
       const raw1Price = data.raw1.price.value,
             raw2Price = data.raw2.price.value;
 
-      const single1Price = await calculatePrice(data.single1),
-            single2Price = await calculatePrice(data.single2),
+      const simple1Price = await calculatePrice(data.simple1),
+            simple2Price = await calculatePrice(data.simple2),
             combinedPrice = await calculatePrice(data.combined);
 
-      expect(single1Price).to.equal(0.5 * raw1Price + 5 * raw2Price);
-      expect(single2Price).to.equal(2 * raw1Price);
-      expect(combinedPrice).to.equal(3 * single1Price + 2 * single2Price);
+      expect(simple1Price).to.equal(0.5 * raw1Price + 5 * raw2Price);
+      expect(simple2Price).to.equal(2 * raw1Price);
+      expect(combinedPrice).to.equal(3 * simple1Price + 2 * simple2Price);
     });
   });
 
@@ -85,7 +93,7 @@ describe('Core', () => {
     it('should materialize products', async () => {
       const data = await utils.mockData();
 
-      const formatted = await materialize([data.raw1, data.raw2, data.single1, data.single2, data.combined]);
+      const formatted = await materialize([data.raw1, data.raw2, data.simple1, data.simple2, data.combined]);
 
       expect(formatted.length).to.equal(5);
       expect(formatted[0].price).to.deep.equal(data.raw1.price);

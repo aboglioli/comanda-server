@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-const {PRODUCT_TYPES, MASS_UNITS, VOLUME_UNITS, UNIT} = require('../../core/enums');
+const {PRODUCT_TYPES, MASS_UNITS, CAPACITY_UNITS, VOLUME_UNITS, UNIT} = require('../../core/enums');
 
 const QuantitySchema = {
   value: {type: Number, required: true},
-  unit: {type: String, required: true, enum: [...MASS_UNITS, ...VOLUME_UNITS, UNIT]}
+  unit: {type: String, required: true, enum: [...MASS_UNITS, ...CAPACITY_UNITS, ...VOLUME_UNITS, UNIT]}
 };
 
 const PriceSchema = {
@@ -26,15 +26,5 @@ const ProductSchema = new mongoose.Schema({
     product: {type: mongoose.Schema.Types.ObjectId, ref: 'Product'}
   }]
 });
-
-// const populateSubproducts = function (next) {
-//   this.populate('subproducts.product');
-//   next();
-// };
-
-// ProductSchema
-//   .pre('find', populateSubproducts)
-//   .pre('findOne', populateSubproducts)
-//   .pre('findById', populateSubproducts);
 
 module.exports = mongoose.model('Product', ProductSchema);

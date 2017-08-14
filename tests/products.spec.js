@@ -38,13 +38,13 @@ describe('Product', () => {
   });
 
   it('GET /products?type=%', async () => {
-    const res = await utils.request.get('products?type=single')
+    const res = await utils.request.get('products?type=simple')
           .set('Authorization', adminToken)
           .expect(200);
 
     expect(res.body.length).to.equal(2);
-    expect(res.body[0].name).to.equal('Single1');
-    expect(res.body[1].name).to.equal('Single2');
+    expect(res.body[0].name).to.equal('Simple1');
+    expect(res.body[1].name).to.equal('Simple2');
   });
 
   it('GET /products?type=%&name=%', async () => {
@@ -65,7 +65,7 @@ describe('Product', () => {
   });
 
   it('GET /products/{productId}/subproducts', async () => {
-    let res = await utils.request.get('products/' + data.single1._id + '/subproducts')
+    let res = await utils.request.get('products/' + data.simple1._id + '/subproducts')
         .set('Authorization', adminToken)
         .expect(200);
 
@@ -77,8 +77,8 @@ describe('Product', () => {
 
   it('POST /products', async () => {
     const newProduct = {
-      name: 'Single3',
-      type: 'single',
+      name: 'Simple3',
+      type: 'simple',
       subproducts: [{
         quantity: {
           value: 2,
@@ -111,7 +111,7 @@ describe('Product', () => {
     // Create new product
     const newProduct = {
       name: 'NewProduct',
-      type: 'single',
+      type: 'simple',
       subproducts: [{
         quantity: {
           value: 2,

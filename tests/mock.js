@@ -49,9 +49,9 @@ exports.mockData = async () => {
       }
     }
   });
-  data.single1 = await Product.create({
-    name: 'Single1',
-    type: 'single',
+  data.simple1 = await Product.create({
+    name: 'Simple1',
+    type: 'simple',
     subproducts: [{
       quantity: {
         value: 500,
@@ -66,9 +66,9 @@ exports.mockData = async () => {
       product: data.raw2._id
     }]
   });
-  data.single2 = await Product.create({
-    name: 'Single2',
-    type: 'single',
+  data.simple2 = await Product.create({
+    name: 'Simple2',
+    type: 'simple',
     subproducts: [{
       quantity: {
         value: 2,
@@ -85,13 +85,13 @@ exports.mockData = async () => {
         value: 3,
         unit: 'u'
       },
-      product: data.single1._id
+      product: data.simple1._id
     }, {
       quantity: {
         value: 2,
         unit: 'u'
       },
-      product: data.single2._id
+      product: data.simple2._id
     }]
   });
 
