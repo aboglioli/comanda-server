@@ -25,7 +25,7 @@ exports.VOLUME_UNITS = [
 ];
 
 
-exports.UNIT = 'u';
+exports.UNIT = [{unit: 'u', multiplier: 1.0}];
 
 exports.ROLES = ['admin'];
 
