@@ -1,3 +1,5 @@
+const {MASS_UNITS, VOLUME_UNITS, UNIT} = require('./enums');
+
 const Units = require('./units');
 const Product = require('../models/product');
 
@@ -12,11 +14,17 @@ exports.calculatePrice = async (product) => {
 
     if(subproduct.type === 'raw') {
       const subproductPrice = subproduct.price;
-      const [subproductQuantity, subproductUnit] = Units.normalize(subproductPrice.quantity.value, subproductPrice.quantity.unit);
-      const [quantity, unit] = Units.normalize(quantityObj.value, quantityObj.unit);
+      const subproductQuantity = Units.normalize(subproductPrice.quantity.value, subproductPrice.quantity.unit);
+      const quantity = Units.normalize(quantityObj.value, quantityObj.unit);
 
-      if(unit !== subproductUnit) {
-        throw new Error('Product and subproduct units are not equal');
+      const unitName1 = subproductPrice.quantity.unit;
+      const unitName2 = quantityObj.unit;
+
+      const sameTypeOfUnits = Units.isUnitOfType(MASS_UNITS, unitName1, unitName2) ||
+                              Units.isUnitOfType(VOLUME_UNITS, unitName1, unitName2);
+
+      if(!sameTypeOfUnits) {
+        throw new Error('Product and subproduct units are not of same type');
       }
 
       return await price + quantity * (subproductPrice.value / subproductQuantity);

@@ -1,13 +1,18 @@
 const mongoose = require('mongoose');
 
-const {PRODUCT_TYPES, MASS_UNITS, CAPACITY_UNITS, VOLUME_UNITS, UNIT} = require('../../core/enums');
+const {PRODUCT_TYPES, MASS_UNITS, VOLUME_UNITS, UNIT} = require('../../core/enums');
+
+const ALL_UNITS = [
+  ...MASS_UNITS.map(unit => unit.unit),
+  ...VOLUME_UNITS.map(unit => unit.unit)
+];
 
 const QuantitySchema = {
   value: {type: Number, required: true},
   unit: {
     type: String,
     required: true,
-    enum: [...MASS_UNITS, ...CAPACITY_UNITS, ...VOLUME_UNITS, UNIT]
+    enum: ALL_UNITS
   }
 };
 

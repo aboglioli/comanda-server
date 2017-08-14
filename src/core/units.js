@@ -1,12 +1,10 @@
-const {MASS_UNITS, CAPACITY_UNITS, VOLUME_UNITS, UNIT} = require('./enums');
+const {MASS_UNITS, VOLUME_UNITS, UNIT} = require('./enums');
 
-// @return [value, unitName]
+// @return value
 exports.normalize = function (value, unitName) {
-  const unitArray = MASS_UNITS.some(u => u.unit === unitName)
+  const unitArray = isUnitOfType(MASS_UNITS, unitName)
       ? MASS_UNITS
-      : CAPACITY_UNITS.some(u => u.unit === unitName)
-      ? CAPACITY_UNITS
-      : VOLUME_UNITS.some(u => u.unit === unitName)
+      : isUnitOfType(VOLUME_UNITS, unitName)
       ? VOLUME_UNITS
       : null;
 
@@ -14,8 +12,12 @@ exports.normalize = function (value, unitName) {
     throw new Error('Unit does not exist');
   }
 
-  return [
-    value * unitArray.find(u => u.unit === unitName).multiplier,
-    unitArray.find(u => u.multiplier === 1.0).unit
-  ];
+  return value * unitArray.find(u => u.unit === unitName).multiplier;
+;
 };
+
+function isUnitOfType (unitType, ...unitNames) {
+  return unitNames.every(unitName => unitType.some(unit => unit.unit === unitName));
+}
+
+exports.isUnitOfType = isUnitOfType;

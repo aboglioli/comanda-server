@@ -34,41 +34,32 @@ describe('Core', () => {
 
   describe('Units', () => {
     it('should convert between mass and volume units', () => {
-      let [value, unit] = normalize(2, 'kg');
+      let value = normalize(2, 'kg');
       expect(value).to.equal(2000.0);
-      expect(unit).to.equal('g');
 
-      [value, unit] = normalize(2.3, 'kg');
+      value = normalize(2.3, 'kg');
       expect(value).to.equal(2300.0);
-      expect(unit).to.equal('g');
 
-      [value, unit] = normalize(0.3, 'kg');
+      value = normalize(0.3, 'kg');
       expect(value).to.equal(300.0);
-      expect(unit).to.equal('g');
 
-      [value, unit] = normalize(0.3, 'dag');
+      value = normalize(0.3, 'dag');
       expect(value).to.equal(3.0);
-      expect(unit).to.equal('g');
 
-      [value, unit] = normalize(0.3, 'l');
+      value = normalize(0.3, 'l');
       expect(value).to.equal(0.3);
-      expect(unit).to.equal('l');
 
-      [value, unit] = normalize(20, 'ml');
+      value = normalize(20, 'ml');
       expect(value).to.equal(0.02);
-      expect(unit).to.equal('l');
 
-      [value, unit] = normalize(20, 'kl');
+      value = normalize(20, 'kl');
       expect(value).to.equal(20000.0);
-      expect(unit).to.equal('l');
 
-      [value, unit] = normalize(1, 'dm3');
+      value = normalize(1, 'dm3');
       expect(value).to.equal(1.0);
-      expect(unit).to.equal('dm3');
 
-      [value, unit] = normalize(1, 'm3');
+      value = normalize(1, 'm3');
       expect(value).to.equal(1000.0);
-      expect(unit).to.equal('dm3');
     });
   });
 
