@@ -139,7 +139,6 @@ describe('Product', () => {
       .set('Authorization', adminToken)
       .send({
         name: 'NewName',
-        description: 'Description',
         subproducts: [{
           quantity: {
             value: 30,
@@ -151,7 +150,6 @@ describe('Product', () => {
       .expect(200);
 
     expect(res.body.name).to.equal('NewName');
-    expect(res.body.description).to.equal('Description');
     expect(res.body.price.value).to.equal(3 * data.raw1.price.value);
 
     // Update subproduct

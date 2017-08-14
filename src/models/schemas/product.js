@@ -4,22 +4,23 @@ const {PRODUCT_TYPES, MASS_UNITS, CAPACITY_UNITS, VOLUME_UNITS, UNIT} = require(
 
 const QuantitySchema = {
   value: {type: Number, required: true},
-  unit: {type: String, required: true, enum: [...MASS_UNITS, ...CAPACITY_UNITS, ...VOLUME_UNITS, UNIT]}
+  unit: {
+    type: String,
+    required: true,
+    enum: [...MASS_UNITS, ...CAPACITY_UNITS, ...VOLUME_UNITS, UNIT]
+  }
 };
 
 const PriceSchema = {
   value: {type: Number, required: true},
-  quantity: {type: QuantitySchema, required: function() {
-    return this.type === 'raw';
-  }}
+  quantity: {type: QuantitySchema}
 };
 
 const ProductSchema = new mongoose.Schema({
   name: {type: String, required: true},
-  description: String,
   type: {type: String, enum: PRODUCT_TYPES},
   price: {type: PriceSchema, required: function() {
-    return this.type === 'raw';
+    return ['raw', 'disposable', 'paper'].includes(this.type);
   }},
   subproducts: [{
     quantity: {type: QuantitySchema, required: true},
