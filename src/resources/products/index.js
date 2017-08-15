@@ -129,7 +129,8 @@ module.exports = [
         },
         payload: {
           name: Joi.string().optional(),
-          type: Joi.string().valid(...PRODUCT_TYPES).optional(),
+          // type cannot be changed
+          // type: Joi.string().valid(...PRODUCT_TYPES).optional(),
           price: Joi.number().optional(),
           unit: Joi.object({
             value: Joi.number().required(),

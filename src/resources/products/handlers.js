@@ -3,6 +3,7 @@ const _ = require('lodash');
 const Product = require('../../models/product');
 const Units = require('../../core/units');
 const ProductUtils = require('../../core/product');
+const Enums = require('../../core/enums');
 
 exports.get = async function (request, reply) {
   const filters = request.query || {};
@@ -22,12 +23,14 @@ exports.getById = async function (request, reply) {
 };
 
 exports.post = async function (request, reply) {
-  if(request.payload.type !== 'raw' && request.payload.price) {
-    return reply({message: 'Only raw products can have price'}).code(400);
+  let productData = request.payload;
+
+  if(!Enums.RAW_TYPES.includes(productData.type) && productData.price) {
+    productData = _.omit(productData, 'price');
   }
 
   try {
-    let product = await Product.create(request.payload);
+    let product = await Product.create(productData);
     return reply(await ProductUtils.materialize(product)).code(201);
   } catch(e) {
     return reply({message: e.message}).code(400);
@@ -35,8 +38,22 @@ exports.post = async function (request, reply) {
 };
 
 exports.put = async function (request, reply) {
+  let productData = request.payload;
+
+  const productInDb = await Product.getById(request.params.productId);
+
+  if(!productInDb) {
+    return reply({message: 'Product does not exist'}).code(404);
+  }
+
+  if(!(Enums.RAW_TYPES.includes(productData.type) ||
+       Enums.RAW_TYPES.includes(productInDb.type)) &&
+     productData.price) {
+    productData = _.omit(productData, 'price');
+  }
+
   try {
-    let product = await Product.updateById(request.params.productId, request.payload);
+    let product = await Product.updateById(request.params.productId, productData);
     return reply(await ProductUtils.materialize(product)).code(200);
   } catch(e) {
     return reply({message: e.message}).code(400);

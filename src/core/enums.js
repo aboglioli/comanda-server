@@ -1,3 +1,4 @@
+// units
 exports.MASS_UNITS = [
   {unit: 'mg', multiplier: 0.001},
   {unit: 'cg', multiplier: 0.01},
@@ -29,8 +30,25 @@ exports.UNIT = [{unit: 'u', multiplier: 1.0}];
 
 exports.ROLES = ['admin'];
 
-exports.PRODUCT_TYPES = [
-  'raw', 'disposable', 'paper',
-  'intermediate', 'sauce',
+// product types
+const RAW_TYPES = [
+  'raw', 'disposable', 'paper'
+];
+
+const INTERMEDIATE_TYPES = [
+  'intermediate', 'sauce'
+];
+
+const FINAL_TYPES = [
   'simple', 'combination', 'sauce-cup'
 ];
+
+exports.PRODUCT_TYPES = [
+  ...RAW_TYPES,
+  ...INTERMEDIATE_TYPES,
+  ...FINAL_TYPES
+];
+
+exports.RAW_TYPES = RAW_TYPES;
+exports.INTERMEDIATE_TYPES = INTERMEDIATE_TYPES;
+exports.FINAL_TYPES = FINAL_TYPES;
