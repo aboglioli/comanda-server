@@ -90,7 +90,6 @@ module.exports = [
       validate: {
         payload: {
           name: Joi.string().required(),
-          description: Joi.string().optional(),
           type: Joi.string().valid(...PRODUCT_TYPES).required(),
           price: Joi.object({
             value: Joi.number().required(),
@@ -132,7 +131,6 @@ module.exports = [
         },
         payload: {
           name: Joi.string().optional(),
-          description: Joi.string().optional(),
           type: Joi.string().valid(...PRODUCT_TYPES).optional(),
           price: Joi.object({
             value: Joi.number().required(),
