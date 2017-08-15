@@ -16,17 +16,16 @@ const QuantitySchema = {
   }
 };
 
-const PriceSchema = {
-  value: {type: Number, required: true},
-  quantity: {type: QuantitySchema}
-};
-
 const ProductSchema = new mongoose.Schema({
   name: {type: String, required: true},
   type: {type: String, enum: PRODUCT_TYPES},
-  price: {type: PriceSchema, required: function() {
-    return ['raw', 'disposable', 'paper'].includes(this.type);
-  }},
+  price: {
+    type: Number,
+    required: function() {
+      return ['raw', 'disposable', 'paper'].includes(this.type);
+    }
+  },
+  unit: {type: QuantitySchema},
   subproducts: [{
     quantity: {type: QuantitySchema, required: true},
     product: {type: mongoose.Schema.Types.ObjectId, ref: 'Product'}

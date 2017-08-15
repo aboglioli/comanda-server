@@ -5,7 +5,7 @@ const Product = require('../models/product');
 
 exports.calculatePrice = async (product) => {
   if(product.type === 'raw') {
-    return product.price.value;
+    return product.price;
   }
 
   return product.subproducts.reduce(async (price, subproductItem) => {
@@ -13,11 +13,10 @@ exports.calculatePrice = async (product) => {
     const quantityObj = subproductItem.quantity;
 
     if(subproduct.type === 'raw') {
-      const subproductPrice = subproduct.price;
-      const subproductQuantity = Units.normalize(subproductPrice.quantity.value, subproductPrice.quantity.unit);
+      const subproductQuantity = Units.normalize(subproduct.unit.value, subproduct.unit.unit);
       const quantity = Units.normalize(quantityObj.value, quantityObj.unit);
 
-      const unitName1 = subproductPrice.quantity.unit;
+      const unitName1 = subproduct.unit.unit;
       const unitName2 = quantityObj.unit;
 
       const sameTypeOfUnits = Units.isUnitOfType(MASS_UNITS, unitName1, unitName2) ||
@@ -27,7 +26,7 @@ exports.calculatePrice = async (product) => {
         throw new Error('Product and subproduct units are not of same type');
       }
 
-      return await price + quantity * (subproductPrice.value / subproductQuantity);
+      return await price + quantity * (subproduct.price / subproductQuantity);
     }
 
     return await price + quantityObj.value * await this.calculatePrice(subproduct);
@@ -40,13 +39,13 @@ exports.materialize = async (product) => {
   }
 
   if(product.type !== 'raw') {
-    const priceValue = await this.calculatePrice(product);
-    product.price = {
-      value: priceValue,
-      quantity: {
-        value: 1,
-        unit: 'u'
-      }
+    product.price = await this.calculatePrice(product);
+  }
+
+  if(!product.unit) {
+    product.unit = {
+      value: 1,
+      unit: 'u'
     };
   }
 

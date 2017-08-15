@@ -24,7 +24,7 @@ describe('Product', () => {
     expect(res.body[4].name).to.equal(data.combined.name);
 
     const combinedPrice = 3 * (0.5 * 20 + 5 * 10) + 2 * (2 * 20);
-    expect(res.body[4].price.value).to.equal(combinedPrice);
+    expect(res.body[4].price).to.equal(combinedPrice);
   });
 
   it('GET /products?name=%', async () => {
@@ -102,7 +102,7 @@ describe('Product', () => {
     expect(res.body._id).to.not.be.undefined;
     expect(res.body.name).to.equal(newProduct.name);
     expect(res.body.type).to.equal(newProduct.type);
-    expect(res.body.price.value).to.equal(2 * 20 + 0.8 * 10);
+    expect(res.body.price).to.equal(2 * 20 + 0.8 * 10);
     expect(res.body.subproducts[0].product.toString()).to.equal(data.raw1._id.toString());
     expect(res.body.subproducts[1].product.toString()).to.equal(data.raw2._id.toString());
   });
@@ -150,18 +150,16 @@ describe('Product', () => {
       .expect(200);
 
     expect(res.body.name).to.equal('NewName');
-    expect(res.body.price.value).to.equal(3 * data.raw1.price.value);
+    expect(res.body.price).to.equal(3 * data.raw1.price);
 
     // Update subproduct
     await utils.request.put('products/' + data.raw1._id)
       .set('Authorization', adminToken)
       .send({
-        price: {
-          value: 15,
-          quantity: {
-            value: 0.5,
-            unit: 'kg'
-          }
+        price: 15,
+        unit: {
+          value: 0.5,
+          unit: 'kg'
         }
       })
       .expect(200);
@@ -170,7 +168,7 @@ describe('Product', () => {
       .set('Authorization', adminToken)
       .expect(200);
 
-    expect(res.body.price.value).to.equal(3 / 0.5  * 15);
+    expect(res.body.price).to.equal(3 / 0.5  * 15);
   });
 
   it('DELETE /products/{productId}', async () => {

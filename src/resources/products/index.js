@@ -91,12 +91,10 @@ module.exports = [
         payload: {
           name: Joi.string().required(),
           type: Joi.string().valid(...PRODUCT_TYPES).required(),
-          price: Joi.object({
+          price: Joi.number().optional(),
+          unit: Joi.object({
             value: Joi.number().required(),
-            quantity: Joi.object({
-              value: Joi.number().required(),
-              unit: Joi.string().required()
-            }).required()
+            unit: Joi.string().required()
           }).optional(),
           subproducts: Joi.array().items(Joi.object({
             quantity: Joi.object({
@@ -132,12 +130,10 @@ module.exports = [
         payload: {
           name: Joi.string().optional(),
           type: Joi.string().valid(...PRODUCT_TYPES).optional(),
-          price: Joi.object({
+          price: Joi.number().optional(),
+          unit: Joi.object({
             value: Joi.number().required(),
-            quantity: Joi.object({
-              value: Joi.number().required(),
-              unit: Joi.string().required()
-            }).required()
+            unit: Joi.string().required()
           }).optional(),
           subproducts: Joi.array().items(Joi.object({
             quantity: Joi.object({

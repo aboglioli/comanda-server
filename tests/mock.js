@@ -30,23 +30,19 @@ exports.mockData = async () => {
   data.raw1 = await Product.create({
     name: 'Raw1',
     type: 'raw',
-    price: {
-      value: 20,
-      quantity: {
-        value: 1,
-        unit: 'kg'
-      }
+    price: 20,
+    unit: {
+      value: 1,
+      unit: 'kg'
     }
   });
   data.raw2 = await Product.create({
     name: 'Raw2',
     type: 'raw',
-    price: {
-      value: 10,
-      quantity: {
-        value: 1,
-        unit: 'l'
-      }
+    price: 10,
+    unit: {
+      value: 1,
+      unit: 'l'
     }
   });
   data.simple1 = await Product.create({

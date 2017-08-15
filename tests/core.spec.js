@@ -67,8 +67,8 @@ describe('Core', () => {
     it('should calculatePrice() of product with subproducts (nested products)', async () => {
       const data = await utils.mockData();
 
-      const raw1Price = data.raw1.price.value,
-            raw2Price = data.raw2.price.value;
+      const raw1Price = data.raw1.price,
+            raw2Price = data.raw2.price;
 
       const simple1Price = await calculatePrice(data.simple1),
             simple2Price = await calculatePrice(data.simple2),
@@ -91,7 +91,7 @@ describe('Core', () => {
       expect(formatted[1].price).to.deep.equal(data.raw2.price);
 
       const combinedPrice = 3 * (0.5 * 20 + 5 * 10) + 2 * (2 * 20);
-      expect(formatted[4].price.value).to.equal(combinedPrice);
+      expect(formatted[4].price).to.equal(combinedPrice);
     });
   });
 });
