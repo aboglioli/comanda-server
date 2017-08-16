@@ -15,11 +15,11 @@ describe('Account', () => {
 
 	it('POST /account/login', async () => {
     const res = await utils.request.post('account/login')
-          .send({
-            user: 'admin',
-            password: 'admin123'
-          })
-          .expect(200);
+      .send({
+        user: 'admin',
+        password: 'admin123'
+      })
+      .expect(200);
 
     expect(res.body.authToken).to.not.be.undefined;
 	});
