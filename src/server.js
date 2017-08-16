@@ -8,6 +8,7 @@ const config = require('./config');
 const routes = require('./routes');
 const { authenticate } = require('./core/authentication');
 
+// Hapi server
 const server = new Hapi.Server();
 
 server.connection({
@@ -22,6 +23,14 @@ server.connection({
   }
 });
 
+// socket.io server
+const io = require('socket.io')(server.listener);
+
+io.on('connection', (socket) => {
+  socket.emit('pong');
+});
+
+// config
 if (config.app.logging) {
   server.ext({
     type: 'onRequest',
