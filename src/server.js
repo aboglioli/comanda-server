@@ -24,10 +24,11 @@ server.connection({
 });
 
 // socket.io server
-const io = require('socket.io')(server.listener);
-
-io.on('connection', (socket) => {
-  socket.emit('pong');
+server.register(require('./socket'), function (err) {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
 });
 
 // config
