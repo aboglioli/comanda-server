@@ -1,4 +1,4 @@
-const {MASS_UNITS, VOLUME_UNITS, UNIT} = require('./enums');
+const {MASS_UNITS, VOLUME_UNITS, LENGTH_UNITS, UNIT} = require('./enums');
 
 const Units = require('./units');
 const Product = require('../models/product');
@@ -20,7 +20,8 @@ exports.calculatePrice = async (product) => {
       const unitName2 = quantityObj.unit;
 
       const sameTypeOfUnits = Units.isUnitOfType(MASS_UNITS, unitName1, unitName2) ||
-                              Units.isUnitOfType(VOLUME_UNITS, unitName1, unitName2);
+        Units.isUnitOfType(VOLUME_UNITS, unitName1, unitName2) ||
+        Units.isUnitOfType(LENGTH_UNITS, unitName1, unitName2);
 
       if(!sameTypeOfUnits) {
         throw new Error('Product and subproduct units are not of same type');

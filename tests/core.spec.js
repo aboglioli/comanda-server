@@ -60,6 +60,12 @@ describe('Core', () => {
 
       value = normalize(1, 'm3');
       expect(value).to.equal(1000.0);
+
+      value = normalize(100, 'cm');
+      expect(value).to.equal(1.0);
+
+      value = normalize(100, 'mm');
+      expect(value).to.equal(0.1);
     });
   });
 

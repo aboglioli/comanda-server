@@ -25,6 +25,12 @@ exports.VOLUME_UNITS = [
   {unit: 'm3', multiplier: 1000.0},
 ];
 
+exports.LENGTH_UNITS = [
+  {unit: 'mm', multiplier: 0.001},
+  {unit: 'cm', multiplier: 0.01},
+  {unit: 'm', multiplier: 1.0},
+];
+
 
 exports.UNIT = [{unit: 'u', multiplier: 1.0}];
 
