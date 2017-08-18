@@ -1,10 +1,10 @@
 const Hapi = require('hapi');
 const corsHeaders = require('hapi-cors-headers');
+const Nes = require('nes');
 const Inert = require('inert');
 const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
 
-const socket = require('./socket');
 const config = require('./config');
 const routes = require('./routes');
 const { authenticate } = require('./core/authentication');
@@ -21,14 +21,6 @@ server.connection({
       credentials: true,
       additionalHeaders: ['Origin', 'Access-Control-Allow-Origin']
     }
-  }
-});
-
-// socket.io server
-server.register(socket, function (err) {
-  if (err) {
-    console.error(err);
-    process.exit(1);
   }
 });
 
@@ -49,6 +41,7 @@ if (config.app.logging) {
   });
 }
 
+// register
 server.register(require('hapi-async-handler'), function(err) {
   if (err) {
     console.error(err);
@@ -88,13 +81,22 @@ server.register(require('hapi-auth-jwt2'), err => {
 
 server.ext('onPreResponse', corsHeaders);
 
-server.start((err) => {
-  if (err) {
-    console.error(err);
-    process.exit(1);
-  }
+// Start server with Nes for real-time communication
+server.register(Nes, function (err) {
+  server.subscription('/hello');
 
-  console.log('Server running at:', server.info.uri);
+  server.start((err) => {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+
+    setTimeout(() => {
+      server.publish('/hello', { msg: 'hello' });
+    }, 2000);
+
+    console.log('Server running at:', server.info.uri);
+  });
 });
 
 module.exports = server;

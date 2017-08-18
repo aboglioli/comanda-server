@@ -7,6 +7,8 @@ exports.register = function (server, options, next) {
 
     socket.emit('hola', {content: 'hola'});
 
+    console.log(server);
+
     socket.on('chau', (data) => {
       console.log('chau > ', data);
     });
@@ -16,5 +18,5 @@ exports.register = function (server, options, next) {
 };
 
 exports.register.attributes = {
-  name: 'socketio'
+  name: 'socket'
 };
