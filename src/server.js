@@ -4,6 +4,7 @@ const Inert = require('inert');
 const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
 
+const socket = require('./socket');
 const config = require('./config');
 const routes = require('./routes');
 const { authenticate } = require('./core/authentication');
@@ -24,7 +25,7 @@ server.connection({
 });
 
 // socket.io server
-server.register(require('./socket'), function (err) {
+server.register(socket, function (err) {
   if (err) {
     console.error(err);
     process.exit(1);

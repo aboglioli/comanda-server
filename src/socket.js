@@ -3,10 +3,12 @@ exports.register = function (server, options, next) {
 
   console.log('Setting up socket.io');
   io.on('connection', (socket) => {
-    console.log('New socket connection');
+    console.log('connected');
 
-    socket.on('ping', () => {
-      socket.emit('pong');
+    socket.emit('hola', {content: 'hola'});
+
+    socket.on('chau', (data) => {
+      console.log('chau > ', data);
     });
   });
 
@@ -14,5 +16,5 @@ exports.register = function (server, options, next) {
 };
 
 exports.register.attributes = {
-  name: 'socket.io'
+  name: 'socketio'
 };
