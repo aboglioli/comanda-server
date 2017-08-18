@@ -14,6 +14,9 @@ exports.get = async function (request, reply) {
 
   const products = await Product.find(filters);
 
+  // TODO: exmaple of notification
+  request.server.publish('/hello', {msg: 'Product retrieved'});
+
   return reply(await ProductUtils.materialize(products));
 };
 

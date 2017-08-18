@@ -91,10 +91,6 @@ server.register(Nes, function (err) {
       process.exit(1);
     }
 
-    setTimeout(() => {
-      server.publish('/hello', { msg: 'hello' });
-    }, 2000);
-
     console.log('Server running at:', server.info.uri);
   });
 });
