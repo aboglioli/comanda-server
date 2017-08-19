@@ -4,6 +4,7 @@ const Nes = require('nes');
 const Inert = require('inert');
 const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
+const Jwt2 = require('hapi-auth-jwt2');
 
 const config = require('./config');
 const routes = require('./routes');
@@ -55,20 +56,25 @@ server.register([
   {
     register: HapiSwagger,
     options: config.swagger
-  }], (err) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  });
+  }
+], (err) => {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
+});
 
-server.register(require('hapi-auth-jwt2'), err => {
+server.register([
+  Jwt2,
+  Nes
+], err => {
   if(err) {
     console.error(err);
     process.exit(1);
   }
 
-  server.auth.strategy('jwt', 'jwt', {
+  // set auth strategy
+  server.auth.strategy('jwt', 'jwt', 'required', {
     key: config.app.jwtKey,
     validateFunc: authenticate,
     verifyOptions: {
@@ -76,15 +82,21 @@ server.register(require('hapi-auth-jwt2'), err => {
     }
   });
 
+  // define routes
   server.route(routes);
-});
 
-server.ext('onPreResponse', corsHeaders);
+  // subscriptions
+  server.subscription('/hello', {
+    auth: {
+      mode: 'required'
+    },
+    filter (path, message, options, next) {
+      console.log('user > ', options.credentials.user);
+      return next(true);
+    }
+  });
 
-// Start server with Nes for real-time communication
-server.register(Nes, function (err) {
-  server.subscription('/hello');
-
+  // start server
   server.start((err) => {
     if (err) {
       console.error(err);
@@ -94,5 +106,7 @@ server.register(Nes, function (err) {
     console.log('Server running at:', server.info.uri);
   });
 });
+
+server.ext('onPreResponse', corsHeaders);
 
 module.exports = server;
