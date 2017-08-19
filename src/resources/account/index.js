@@ -10,6 +10,10 @@ module.exports = [
       handler: {
         async: AccountHandler.login
       },
+      auth: {
+        strategy: 'jwt',
+        mode: 'try'
+      },
       description: 'Create login session',
       tags: ['api', 'account'],
       validate: {
