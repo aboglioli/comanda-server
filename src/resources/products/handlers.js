@@ -16,6 +16,7 @@ exports.get = async function (request, reply) {
 
   // TODO: exmaple of notification
   request.server.publish('/hello', {msg: 'Product retrieved'});
+  request.server.broadcast('welcome!');
 
   return reply(await ProductUtils.materialize(products));
 };
